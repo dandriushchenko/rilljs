@@ -20,6 +20,7 @@ export interface ConnectionProps {
     disabled?: boolean;
     selected?: boolean;
     invalid?: string;
+    onClick?: () => void;
 }
 
 function ConnectionLineImpl(props: ConnectionProps) {
@@ -30,7 +31,8 @@ function ConnectionLineImpl(props: ConnectionProps) {
         disabled,
         fromCoordsOverride,
         toCoordsOverride,
-        invalid
+        invalid,
+        onClick
     } = props;
 
     const theme = useContext<Theme>(ThemeContext);
@@ -109,9 +111,9 @@ function ConnectionLineImpl(props: ConnectionProps) {
             type={connection.type}
             vector={!toCoordsOverride && !fromCoordsOverride ? true : false}
             className={classes}
+            onClick={onClick}
 
             // className={playAnim ? 'rill-connection-run-anim' : undefined}
-            // onClick={onClick}
             // onAnimationEnd={onAnimationEnd}
             // onAnimationStart={onAnimationStart}
         />

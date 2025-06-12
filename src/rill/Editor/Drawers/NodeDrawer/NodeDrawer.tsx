@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { ControlGroup, InputField, Divider } from '../../Components';
 import { NodeDrawerProps } from '../props';
@@ -6,100 +6,100 @@ import { IOValue } from '../../../model';
 import { ValueDrawer } from '../ValueDrawer';
 
 export function NodeDrawer(props: React.PropsWithChildren<NodeDrawerProps>) {
-    const {
-        node,
-        actions,
-        options,
-        theme,
-        invalid,
-        children
-    } = props;
+  const { node, actions, options, theme, invalid, children } = props;
 
-    const { readonly } = options;
-    const [, redraw] = useState({});
-    const classes = theme.classes;
-    const design = node.designDefn;
+  const { readonly } = options;
+  const [, redraw] = useState({});
+  const classes = theme.classes;
+  const design = node.designDefn;
 
-    function onNodeNameChange(event: React.FormEvent<HTMLInputElement>) {
-        const value = event.currentTarget.value;
-        if (node.nodeName === value) {
-            return;
-        }
-
-        actions.beginNodeEdit(node);
-        node.nodeName = value && value !== '' ? value : undefined;
-        actions.finishNodeEdit();
-        redraw({});
+  function onNodeNameChange(event: React.FormEvent<HTMLInputElement>) {
+    const value = event.currentTarget.value;
+    if (node.nodeName === value) {
+      return;
     }
 
-    const valueInternals = node.getValueInternals();
-    const valueInputs = node.getValueInputs();
-    const valueOutputs = node.getValueOutputs();
+    actions.beginNodeEdit(node);
+    node.nodeName = value && value !== '' ? value : undefined;
+    actions.finishNodeEdit();
+    redraw({});
+  }
 
-    function renderValue(v: IOValue) {
-        return (
-            <ValueDrawer
-                key={v.id}
-                value={v}
-                node={node}
-                actions={actions}
-                options={options}
-                theme={theme}
-            />
-        );
-    }
+  const valueInternals = node.getValueInternals();
+  const valueInputs = node.getValueInputs();
+  const valueOutputs = node.getValueOutputs();
 
+  function renderValue(v: IOValue) {
     return (
-        <div className={classes.node.container}>
-            <div
-                className={classes.node.header}
-                style={design && design.color ? {backgroundColor: design.color} : undefined}
-            >
-                <span>
-                    {node.nodeName || node.defn.name || node.defn.class}
-                </span>
-            </div>
-            <div
-                className={classes.node.content}
-            >
-                {
-                    (invalid && invalid !== '') &&
-                    <div
-                        className={classes.node.error}
-                    >
-                        {invalid}
-                    </div>
-                }
-                <ControlGroup
-                    label="Node Name"
-                >
-                    <InputField
-                        value={node.nodeName || ''}
-                        onChange={onNodeNameChange}
-                        disabled={readonly}
-                    />
-                </ControlGroup>
-                {
-                    valueInternals.map(vi => renderValue(vi))
-                }
-                {
-                    valueInputs.length > 0 &&
-                    <Divider />
-                }
-                {
-                    valueInputs.map(vi => renderValue(vi))
-                }
-                {
-                    valueOutputs.length > 0 &&
-                    <Divider />
-                }
-                {
-                    valueOutputs.map(vo => renderValue(vo))
-                }
-                {
-                    children
-                }
-            </div>
-        </div>
-    );    
+      <ValueDrawer
+        key={v.id}
+        value={v}
+        node={node}
+        actions={actions}
+        options={options}
+        theme={theme}
+      />
+    );
+  }
+
+  const onKeyUp = useCallback(
+    (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement;
+
+      const isEditable =
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.tagName === 'SELECT' ||
+        target.isContentEditable;
+
+      if (isEditable) {
+        return;
+      }
+
+      if (['Backspace', 'Delete'].includes(event.key)) {
+        actions.deleteNodes(
+          actions.getSelectedNodes().map((n) => n.node.nodeID)
+        );
+      }
+    },
+    [actions]
+  );
+
+  useEffect(() => {
+    document.addEventListener('keyup', onKeyUp);
+    return () => {
+      document.removeEventListener('keyup', onKeyUp);
+    };
+  }, [onKeyUp]);
+
+  return (
+    <div className={classes.node.container}>
+      <div
+        className={classes.node.header}
+        style={
+          design && design.color ? { backgroundColor: design.color } : undefined
+        }
+      >
+        <span>{node.nodeName || node.defn.name || node.defn.class}</span>
+      </div>
+      <div className={classes.node.content}>
+        {invalid && invalid !== '' && (
+          <div className={classes.node.error}>{invalid}</div>
+        )}
+        <ControlGroup label='Node Name'>
+          <InputField
+            value={node.nodeName || ''}
+            onChange={onNodeNameChange}
+            disabled={readonly}
+          />
+        </ControlGroup>
+        {valueInternals.map((vi) => renderValue(vi))}
+        {valueInputs.length > 0 && <Divider />}
+        {valueInputs.map((vi) => renderValue(vi))}
+        {valueOutputs.length > 0 && <Divider />}
+        {valueOutputs.map((vo) => renderValue(vo))}
+        {children}
+      </div>
+    </div>
+  );
 }

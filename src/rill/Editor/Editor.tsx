@@ -217,19 +217,21 @@ const RillEditorImpl: RefForwardingComponent<RillEditorRef, RillEditorProps> = (
         }
     }
 
+    function onMouseDown(event: React.MouseEvent<Element>) {
+        modelActions.selectConnection(undefined);
+    }
+
     function onKeyUp(event: React.KeyboardEvent<HTMLDivElement>) {
-        // It's important to use KeyUp, in KeyPress
-        // Delete and Period returns the same code 46
-        // TODO
-        // if (isInFocus(editDialog or createDialog))
-        // switch (event.which) {
-        //     case Keys.Delete:
-        //     case Keys.Backspace:
-        //         modelActions.deleteNodes(modelActions.getSelectedNodes().map(n => n.node.nodeID));
-        //         break;
-        //     default:
-        //         // Nothing here for now...
-        // }
+        if (!modelView.selectedConnection) return;
+
+        const existing = modelActions.findConnections(({ connection }) => connection.id === modelView.selectedConnection);
+
+        if (existing.length === 0 || !['Backspace', 'Delete'].includes(event.key)) {
+            modelActions.selectConnection(undefined);
+            return;
+        };
+        
+        modelActions.deleteConnections(modelView.selectedConnection);
     }
 
     useEffect(() => {
@@ -315,6 +317,10 @@ const RillEditorImpl: RefForwardingComponent<RillEditorRef, RillEditorProps> = (
             return null;
         }
 
+        const onClick = () => {
+            modelActions.selectConnection(c.connection.id);
+        }
+
         return (
             <ConnectionLine
                 key={c.connection.id}
@@ -324,6 +330,7 @@ const RillEditorImpl: RefForwardingComponent<RillEditorRef, RillEditorProps> = (
                 to={to}
                 invalid={c.invalid}
                 selected={c.selected}
+                onClick={onClick}
             />
         );
     }
@@ -387,6 +394,7 @@ const RillEditorImpl: RefForwardingComponent<RillEditorRef, RillEditorProps> = (
                 tabIndex={0}
                 style={style}
                 className={mergeClasses(theme.classes.theme, className)}
+                onMouseDown={onMouseDown}
                 onMouseUp={onMouseUp}
                 onDoubleClick={onDoubleClick}
                 onKeyUp={onKeyUp}
