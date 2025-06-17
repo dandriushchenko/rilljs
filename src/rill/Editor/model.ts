@@ -98,6 +98,7 @@ export type ModelView = {
         targetPos: Coords;
         targetPort?: Port;
     };
+    selectedConnection?: string;
 
     // Editor view
     history: HistoryState;
@@ -137,6 +138,7 @@ export type ModelActions = {
     updateConnectionEditTarget: (targetPort: Port | undefined, targetPos: Coords) => void;
     finishConnectionEdit: () => void;
     cancelConnectionEdit: () => void;
+    selectConnection: (connection: string | undefined) => void;
 
     beginNodeEdit: (node: Node | string) => void;
     finishNodeEdit: () => void;
@@ -1001,6 +1003,10 @@ function buildActionsState(
         });
     }
 
+    function selectConnection(connection: string | undefined) {
+        viewState.selectedConnection = connection;
+    }
+
     function beginConnectionEdit(port: Port, pos: Coords) {
         const nodePorts = findNodeAndPort(port);
         if (!nodePorts) {
@@ -1356,6 +1362,7 @@ function buildActionsState(
         updateConnectionEditTarget,
         cancelConnectionEdit,
         finishConnectionEdit,
+        selectConnection,
 
         beginNodeEdit,
         finishNodeEdit,
