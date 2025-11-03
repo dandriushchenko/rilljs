@@ -112,6 +112,7 @@ export type ModelView = {
 
 export interface ModelHooks {
     onPortsConnected: (connectionID: string, from: Port, to: Port) => void;
+    onRerender?: () => void;
 }
 
 export type ModelActions = {
@@ -282,6 +283,9 @@ function buildActionsState(
 ): ModelActions {
     function forceUpdate() {
         redraw();
+        if (hooks.onRerender) {
+            hooks.onRerender();
+        }
     }
 
     function findNode(id: string): ModelNodeState | undefined {
