@@ -1,6 +1,6 @@
 {
   "name": "@dandriushchenko/rilljs",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "homepage": "https://www.rilljs.com",
   "private": false,
   "publishConfig": {
@@ -100,7 +100,7 @@
     "start": "node scripts/start.js",
     "build": "NODE_OPTIONS='--openssl-legacy-provider --max-old-space-size=8192' node scripts/build.js",
     "test": "node scripts/test.js",
-    "prepublishOnly": "npm run build:all",
+    "prepare": "npm run build:all",
     "build:all": "rm -rf dist && npm run build:es2015 && npm run build:esm && npm run build:cjs && npm run build:types && npm run build:styles",
     "build:types": "tsc --p tsconfig-types.json --declarationMap --outDir dist/types",
     "build:styles": "mkdir -p dist/styles && cp src/rill/Editor/themes/theme.css dist/styles/theme.css",
