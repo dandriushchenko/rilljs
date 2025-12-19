@@ -98,7 +98,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "build": "NODE_OPTIONS='--openssl-legacy-provider --max-old-space-size=8192' node scripts/build.js",
     "test": "node scripts/test.js",
     "prepublishOnly": "npm run build:all",
     "build:all": "rm -rf dist && npm run build:es2015 && npm run build:esm && npm run build:cjs && npm run build:types && npm run build:styles",
