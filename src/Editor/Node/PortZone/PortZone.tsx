@@ -87,7 +87,7 @@ export const PortZone = React.memo((props: PortZoneProps) => {
         actions.beginConnectionEdit(port, mousePos);
     }, [readonly, actions, port]);
 
-    const onMouseUp = useCallback((event: React.MouseEvent<Element>) => {
+    const onMouseUp = useCallback(() => {
         if (readonly) {
             return;
         }

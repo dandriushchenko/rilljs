@@ -6,7 +6,7 @@ import { Overlay } from '../Overlay';
 
 export interface DialogProps {
     isOpen: boolean;
-    title?: string | JSX.Element;
+    title?: string | React.ReactNode;
     usePortal?: boolean;
     onClose?: () => void;
 }

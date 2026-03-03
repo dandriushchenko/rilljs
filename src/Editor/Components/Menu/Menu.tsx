@@ -5,7 +5,7 @@ import { mergeClasses } from '../utils';
 export interface MenuProps {
     style?: CSSProperties;
     className?: string;
-    menuRef?: React.RefObject<HTMLUListElement>;
+    menuRef?: React.RefObject<HTMLUListElement | null>;
 }
 
 export const Menu = React.memo((props: React.PropsWithChildren<MenuProps>) => {

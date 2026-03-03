@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { type Node } from '../../model';
 import { type Options, OptionsContext } from '../options';

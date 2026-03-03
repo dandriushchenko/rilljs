@@ -1,7 +1,7 @@
 import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { type Rect, rectsEqual } from '../model';
 
-function getClientDims<E extends Element= Element>(ref: React.RefObject<E>) {
+function getClientDims<E extends Element = Element>(ref: React.RefObject<E | null>) {
     if (!ref.current) {
         return undefined;
     }
@@ -15,7 +15,7 @@ function getClientDims<E extends Element= Element>(ref: React.RefObject<E>) {
     };
 }
 
-export function useDimensions<E extends Element= Element>(): [React.RefObject<E>, Rect] {
+export function useDimensions<E extends Element = Element>(): [React.RefObject<E | null>, Rect] {
     const ref = useRef<E>(null);
     const [dims, setDims] = useState<Rect>({x: 0, y: 0, width: 0, height: 0});
 
@@ -48,7 +48,7 @@ export function useDimensions<E extends Element= Element>(): [React.RefObject<E>
     return [ref, dims];
 }
 
-export function useResizeObservable<E extends Element= Element>(ref: React.RefObject<E>): Rect {
+export function useResizeObservable<E extends Element = Element>(ref: React.RefObject<E | null>): Rect {
     const [dims, setDims] = useState<Rect>({x: 0, y: 0, width: 0, height: 0});
 
     useEffect(() => {

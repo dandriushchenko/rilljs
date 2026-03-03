@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { ControlGroup } from '../../Components';
 import { type Datum, type Node } from '../../../model';
@@ -8,6 +8,7 @@ import { type Options } from '../../options';
 import { type Theme } from '../../theme';
 import { type ValueDrawerProps } from '../props';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function drawDatum<DT, T extends Datum<DT>>(
     v: T,
     vid: string | number,
@@ -34,6 +35,7 @@ export function drawDatum<DT, T extends Datum<DT>>(
     return (
         <DataDrawer
             key={vid}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             value={v as any}
             node={node}
             actions={actions}

@@ -57,7 +57,7 @@ export class Parallel extends Node<ParallelExecutor> {
         }
     }
 
-    protected onBranchesChange(before: number, after: number): number {
+    protected onBranchesChange(_before: number, after: number): number {
         this.updateOutputs(after);
         return after;
     }

@@ -1,9 +1,10 @@
 import { type Port } from './port';
 
-export enum ConnectionType {
-    Flow = 'flow',
-    Value = 'value'
-}
+export const ConnectionType = {
+    Flow: 'flow',
+    Value: 'value'
+} as const;
+export type ConnectionType = typeof ConnectionType[keyof typeof ConnectionType];
 
 export interface ConnectionJSON {
     id: string;

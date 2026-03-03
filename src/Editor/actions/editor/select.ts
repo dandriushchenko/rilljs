@@ -7,6 +7,6 @@ export interface SelectNodes extends Action {
     keepOrder?: boolean;
 }
 
-export function SelectNodesCompressor(previous: SelectNodes, current: SelectNodes) {
+export function SelectNodesCompressor(_previous: SelectNodes, current: SelectNodes) {
     return current;
 }

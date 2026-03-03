@@ -3,23 +3,26 @@ import React, { type SVGTextElementAttributes, useMemo} from 'react';
 import { type Coords } from '../../model';
 import { type BaseProps } from '../Components';
 
-export enum TextAlignment {
-    Left,
-    Right,
-    Middle
-}
+export const TextAlignment = {
+    Left: 0,
+    Right: 1,
+    Middle: 2
+} as const;
+export type TextAlignment = typeof TextAlignment[keyof typeof TextAlignment];
 
-export enum TextVerticalAlignment {
-    Top,
-    Bottom,
-    Middle
-}
+export const TextVerticalAlignment = {
+    Top: 0,
+    Bottom: 1,
+    Middle: 2
+} as const;
+export type TextVerticalAlignment = typeof TextVerticalAlignment[keyof typeof TextVerticalAlignment];
 
-export enum TextOverflow {
-    Overflow,
-    Wrap,
-    Ellipsis
-}
+export const TextOverflow = {
+    Overflow: 0,
+    Wrap: 1,
+    Ellipsis: 2
+} as const;
+export type TextOverflow = typeof TextOverflow[keyof typeof TextOverflow];
 
 export interface TextBoxProps extends BaseProps {
     text: string;
@@ -100,7 +103,7 @@ export const TextBox = React.memo((props: TextBoxProps) => {
                 break;
 
             case TextOverflow.Ellipsis:
-            case TextOverflow.Wrap:
+            case TextOverflow.Wrap: {
                 const ellipsisOffset = overflow === TextOverflow.Ellipsis ? data.ellipsisWidth : 0;
                 for (let i = 0; i < data.words.length; i++) {
                     const w = data.words[i];
@@ -127,6 +130,7 @@ export const TextBox = React.memo((props: TextBoxProps) => {
                     }
                 }
                 break;
+            }
         }
 
         const res = {

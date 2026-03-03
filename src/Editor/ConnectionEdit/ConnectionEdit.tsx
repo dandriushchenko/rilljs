@@ -1,9 +1,6 @@
 // import { Model, ModelContext } from '../model';
 
-export interface ConnectionEditProps {
-}
-
-export function ConnectionEdit(props: ConnectionEditProps) {
+export function ConnectionEdit() {
     // const model = useContext<Model>(ModelContext);
     return null;
 }

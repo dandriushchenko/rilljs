@@ -15,8 +15,8 @@ export interface SnippetsDialogProps extends DialogProps {
 
 function applySnippet(snippet: Snippet, actions: ModelActions, registry: Registry, replaceAll: boolean) {
     if (replaceAll) {
-        const allNodes = actions.findNodes(n => true).map(n => n.node.nodeID);
-        const allConnections = actions.findConnections(c => true).map(c => c.connection.id);
+        const allNodes = actions.findNodes(() => true).map(n => n.node.nodeID);
+        const allConnections = actions.findConnections(() => true).map(c => c.connection.id);
         actions.deleteConnections(allConnections);
         actions.deleteNodes(allNodes);
     }

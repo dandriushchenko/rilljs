@@ -140,7 +140,7 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
         }));
     }
 
-    function onMouseUp(event: React.MouseEvent<Element>) {
+    function onMouseUp() {
         if (!modelView.editingConnection || createDialog) {
             return;
         }
@@ -202,7 +202,7 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
         }
     }
 
-    function onMouseDown(event: React.MouseEvent<Element>) {
+    function onMouseDown() {
         modelActions.selectConnection(undefined);
     }
 
@@ -387,7 +387,7 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
                                     >
                                         <ControlsPanel
                                             controls={prefs.controls}
-                                            editorElement={ref.current}
+                                            editorElement={ref.current || null}
                                             readonly={readonly}
                                         >
                                             {prefs.controlsChildren}

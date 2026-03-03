@@ -20,7 +20,7 @@ export interface SelectProps<I> {
     itemRenderer?: React.FunctionComponent<SelectItemRendererProps<I>> | React.ClassicComponentClass<SelectItemRendererProps<I>>;
     onSelect?: (item: I) => void;
 
-    placeholder?: JSX.Element;
+    placeholder?: React.ReactNode;
 }
 
 function defaultItemRenderer<I>(props: SelectItemRendererProps<I>) {

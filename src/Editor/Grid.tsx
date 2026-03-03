@@ -18,11 +18,12 @@ export interface GridProps {
     disabled?: boolean;
 }
 
-enum GridState {
-    None,
-    Lasso,
-    Pan
-}
+const GridState = {
+    None: 0,
+    Lasso: 1,
+    Pan: 2
+} as const;
+type GridState = typeof GridState[keyof typeof GridState];
 
 export const Grid = React.memo((props: React.PropsWithChildren<GridProps>) => {
     const {

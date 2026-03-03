@@ -7,6 +7,6 @@ export interface ZoomView extends Action {
     anchor?: Coords;
 }
 
-export function ZoomViewCompressor(previous: ZoomView, current: ZoomView) {
+export function ZoomViewCompressor(_previous: ZoomView, current: ZoomView) {
     return current;
 }

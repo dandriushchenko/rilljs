@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 
 import { type IOValue, type Coords, type Rect, type Port } from '../../../model';
 import { PortZone } from '../PortZone';

@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useMemo } from 'react';
 
 import { ThemeContext, type Theme } from '../theme';
 import { mergeClasses } from '../Components';
 import { type ModelActions, ModelActionsContext } from '../model';
-import { type Node, type Coords } from '../../model';
+import { type Coords } from '../../model';
 import { NodeEdit } from '../NodeEdit';
 
 export interface EditOverlayProps {
@@ -22,15 +22,13 @@ export const EditOverlay = React.memo((props: EditOverlayProps) => {
     const theme = useContext<Theme>(ThemeContext).classes;
     const classes = mergeClasses(theme.panel);
     const actions = useContext<ModelActions>(ModelActionsContext);
-    const [nodes, setNodes] = useState<Array<{node: Node, invalid?: string}>>([]);
+    const nodes = useMemo(() => {
+        return actions.findNodes(n => ids.indexOf(n.node.nodeID) >= 0).map(n => ({node: n.node, invalid: n.invalid}));
+    }, [actions, ids]);
+
     const [width, setWidth] = useState(DEFAULT_WIDTH);
     const [initialWidth, setInitialWidth] = useState<number>();
     const [mouseDownPos, setMouseDownPos] = useState<Coords>();
-
-    useEffect(() => {
-        const filtered = actions.findNodes(n => ids.indexOf(n.node.nodeID) >= 0).map(n => ({node: n.node, invalid: n.invalid}));
-        setNodes(filtered);
-    }, [actions, ids]);
 
     useEffect(() => {
         if (typeof initialWidth === 'undefined' || !mouseDownPos) {
@@ -45,7 +43,7 @@ export const EditOverlay = React.memo((props: EditOverlayProps) => {
             setWidth(Math.max(DEFAULT_WIDTH, Math.abs(newWidth)));
         }
 
-        function onMouseUp(event: MouseEvent) {
+        function onMouseUp() {
             setInitialWidth(undefined);
             setMouseDownPos(undefined);
         }

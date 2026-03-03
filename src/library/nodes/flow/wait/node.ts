@@ -57,7 +57,7 @@ export class Wait extends Node<WaitExecutor> {
         }
     }
 
-    protected onBranchesChange(before: number, after: number): void {
+    protected onBranchesChange(_before: number, after: number): void {
         this.updateInputs(after);
     }
 

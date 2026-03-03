@@ -279,7 +279,7 @@ function buildActionsState(
     redraw: () => void,
     options: Options,
     hooks: Partial<ModelHooks>,
-    ref: React.RefObject<HTMLElement>
+    ref: React.RefObject<HTMLElement | null>
 ): ModelActions {
     function forceUpdate() {
         redraw();
@@ -781,6 +781,7 @@ function buildActionsState(
         };
     }
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function compressor(action: ActionType): ActionCompressor<any> | undefined {
         switch (action.type) {
             case 'PanView': return PanViewCompressor;
@@ -1415,7 +1416,7 @@ export function useModel(
     design: Design | undefined,
     options: Options,
     hooks: Partial<ModelHooks>,
-    ref: React.RefObject<HTMLElement>
+    ref: React.RefObject<HTMLElement | null>
 ): [ModelView, ModelActions] {
     const [, setUpdateTime] = useState(Date.now);
     const redraw = useMemo(() => {
@@ -1433,6 +1434,7 @@ export function useModel(
     useEffect(() => {
         const vs = buildDefaultState(graph, design, options);
         const as = buildActionsState(vs, redraw, options, hooks, ref);
+        // eslint-disable-next-line
         setState([vs, as]);
     }, [redraw, graph, design, options, hooks, ref]);
 
@@ -1442,7 +1444,7 @@ export function useModel(
     ];
 }
 
-// @ts-ignore
+// @ts-expect-error Type mismatch for context default value
 export const ModelViewContext = React.createContext<ModelView>({});
-// @ts-ignore
+// @ts-expect-error Type mismatch for context default value
 export const ModelActionsContext = React.createContext<ModelActions>({});

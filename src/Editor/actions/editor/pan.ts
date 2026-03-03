@@ -6,6 +6,6 @@ export interface PanView extends Action {
     pan: Coords;
 }
 
-export function PanViewCompressor(previous: PanView, current: PanView) {
+export function PanViewCompressor(_previous: PanView, current: PanView) {
     return current;
 }

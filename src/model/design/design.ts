@@ -6,11 +6,12 @@ import {type Connection} from '../connections';
 import {type GroupDesign} from './group';
 import {type Coords} from '../types';
 
-export enum DesignViewMode {
-    Detailed,
-    Normal,
-    Minimal
-}
+export const DesignViewMode = {
+    Detailed: 0,
+    Normal: 1,
+    Minimal: 2
+} as const;
+export type DesignViewMode = typeof DesignViewMode[keyof typeof DesignViewMode];
 
 export interface Design {
     groups: GroupDesign[];
@@ -32,7 +33,7 @@ export function createDefaultNodeDesign(n: Node): NodeDesign {
     };
 }
 
-export function createDefaultConnectionDesign(): ConnectionDesign {
+export function createDefaultConnectionDesign(_c?: Connection): ConnectionDesign {
     return {};
 }
 

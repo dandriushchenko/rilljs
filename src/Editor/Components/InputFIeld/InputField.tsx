@@ -14,9 +14,10 @@ export interface ControlledProps {
 export interface InputFieldProps extends ControlledProps, IntentProps, BaseProps {
     disabled?: boolean;
     fill?: boolean;
-    leftElement?: JSX.Element;
+    leftElement?: React.ReactNode;
     placeholder?: string;
-    rightElement?: JSX.Element;
+    element?: React.ReactNode;
+    rightElement?: React.ReactNode;
     round?: boolean;
     type?: string;
     ref?: React.RefObject<HTMLInputElement>;

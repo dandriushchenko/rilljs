@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 
 import { type ControlProps, Control } from './Control';
 import { type Theme, ThemeContext } from '../../theme';

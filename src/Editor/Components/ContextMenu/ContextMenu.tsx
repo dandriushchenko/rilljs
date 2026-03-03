@@ -13,7 +13,7 @@ export const CONTEXT_DISMISS_CLASS = 'context-dismiss';
 
 export interface ContextMenuProps extends BaseProps {
     usePortal?: boolean;
-    menu?: JSX.Element;
+    menu?: React.ReactNode;
     target: HTMLElement | undefined | null;
     disabled?: boolean;
     dismissOnChildrenClick?: boolean;

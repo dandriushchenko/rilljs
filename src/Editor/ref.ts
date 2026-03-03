@@ -8,11 +8,11 @@ export interface EditorDialogs {
     openSnippetDialog: () => void;
 }
 
-// @ts-ignore
+// @ts-expect-error Context will be initialized properly
 export const EditorDialogsContext = React.createContext<EditorDialogs>({});
 
 export interface RillEditorRef {
-    ref: React.RefObject<HTMLDivElement>;
+    ref: React.RefObject<HTMLDivElement | null>;
     actions: ModelActions;
     dialogs: EditorDialogs;
 }

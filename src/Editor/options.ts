@@ -13,11 +13,12 @@ import {
     defaultDataDrawers
 } from './Drawers';
 
-export enum PortConflictPolicy {
-    Allow,
-    Replace,
-    Reject
-}
+export const PortConflictPolicy = {
+    Allow: 0,
+    Replace: 1,
+    Reject: 2
+} as const;
+export type PortConflictPolicy = typeof PortConflictPolicy[keyof typeof PortConflictPolicy];
 
 export interface DesignOptions {
     snapToGrid: boolean;
