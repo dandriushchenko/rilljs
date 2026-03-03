@@ -1,5 +1,4 @@
-
-export interface ExecutorRuntime<R = void, E = any> {
+export interface ExecutorRuntime<R = void, E = unknown> {
     /**
      * Start execution of a node
      */

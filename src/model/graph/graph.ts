@@ -8,7 +8,7 @@ import {
     type InputValue,
     type OutputValue
 } from '../nodes';
-import { type Registry, defaultRegistry } from '../registry';
+import type { Registry } from '../registry';
 import {
     InstanceIDAlreadyExists,
     InstanceDoesntExist,
@@ -341,13 +341,13 @@ export class Graph {
         };
     }
 
-    static fromJSON(json: GraphJSON, registry: Registry = defaultRegistry) {
+    static fromJSON(json: GraphJSON, registry: Registry) {
         const res = new Graph();
         res.fromJSON(json, registry);
         return res;
     }
 
-    fromJSON(json: GraphJSON, registry: Registry = defaultRegistry) {
+    fromJSON(json: GraphJSON, registry: Registry) {
         this.nodes = [];
         this.nodesMap = {};
         Object.values(json.nodes).forEach(n => {

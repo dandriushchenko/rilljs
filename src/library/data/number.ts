@@ -1,6 +1,7 @@
-import { Datum, DatumInvalidTypeError, type DatumDefinition } from '../../model';
+import {Datum, type DatumDefinition, DatumInvalidTypeError} from '../../model';
 
 export const NumberTypeID = 'number';
+
 export class RNumber extends Datum<number> {
     static readonly defn: DatumDefinition = {
         id: NumberTypeID,
@@ -16,18 +17,18 @@ export class RNumber extends Datum<number> {
         return RNumber;
     }
 
-    toJSON() {
-        return this.value;
-    }
-
     static fromJSON(value: unknown): number {
-        switch (typeof(value)) {
+        switch (typeof (value)) {
             case 'number':
                 return value;
 
             default:
                 throw new DatumInvalidTypeError('number', value);
         }
+    }
+
+    toJSON() {
+        return this.value;
     }
 }
 
@@ -44,6 +45,8 @@ export function numberSanitizer(rules: {
         if (typeof rules.max !== 'undefined' && adjusted > rules.max) {
             adjusted = rules.max;
         }
+        //TODO: this is a bit hacky, we should have a more explicit way to specify that the number should be an integer, but for now this will do
+        // eslint-disable-next-line no-constant-condition
         if (typeof rules.integer) {
             adjusted = Math.floor(adjusted);
         }

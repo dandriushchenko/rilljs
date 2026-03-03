@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { type ModelActions } from './model';
-import { type Coords } from '../model';
+import {type ModelActions} from './model';
+import {type Coords} from '../model';
 
 export interface EditorDialogs {
     openCreateDialog: (coords?: Coords) => void;

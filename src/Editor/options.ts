@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 
 import {
-    type Registry,
-    defaultRegistry,
     type Rect,
-    type Coords
+    type Coords,
+    type Registry
 } from '../model';
+import { defaultRegistry } from '../library';
 import { type Snippet } from './SnippetsDialog';
 import {
     type DataDrawerProps,

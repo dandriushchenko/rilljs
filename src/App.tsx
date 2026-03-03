@@ -4,7 +4,6 @@ import {Graph} from "./model";
 import {RillEditor} from "./Editor";
 import './Editor/themes/theme.css';
 
-
 const graph = new Graph();
 const n1 = new ConsoleLog('Some message');
 const n2 = new ConsoleLog('Second message');
