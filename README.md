@@ -2,6 +2,8 @@
 
 Welcome to the RillJS project!
 
+[![Demo](https://img.shields.io/badge/Live_Demo-Play_Now-brightgreen?style=for-the-badge&logo=github)](https://oneznamov.github.io/rilljs/)
+
 This is a React node-based editor designed for high performance and extensibility.
 
 ## Features
