@@ -23,7 +23,7 @@ export const EditOverlay = React.memo((props: EditOverlayProps) => {
     const classes = mergeClasses(theme.panel);
     const actions = useContext<ModelActions>(ModelActionsContext);
     const nodes = useMemo(() => {
-        return actions.findNodes(n => ids.indexOf(n.node.nodeID) >= 0).map(n => ({node: n.node, invalid: n.invalid}));
+        return actions.findNodes(n => ids.includes(n.node.nodeID)).map(n => ({node: n.node, invalid: n.invalid}));
     }, [actions, ids]);
 
     const [width, setWidth] = useState(DEFAULT_WIDTH);
@@ -39,7 +39,8 @@ export const EditOverlay = React.memo((props: EditOverlayProps) => {
 
         function onMouseMove(event: MouseEvent) {
             const diff = downX - event.clientX;
-            const newWidth = initialWidth as number + diff;
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const newWidth = initialWidth! + diff;
             setWidth(Math.max(DEFAULT_WIDTH, Math.abs(newWidth)));
         }
 

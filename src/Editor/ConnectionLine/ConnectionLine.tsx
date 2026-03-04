@@ -76,6 +76,7 @@ function ConnectionLineImpl(props: ConnectionProps) {
                 break;                
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!fromCoords || !toCoords) {
             throw new Error(`Invalid from / to nodes port in connection ${connection.id}. From: ${JSON.stringify(connection.source)}, To: ${JSON.stringify(connection.destination)}`);
         }
@@ -106,8 +107,8 @@ function ConnectionLineImpl(props: ConnectionProps) {
 
     return (
         <Line
-            from={fromCoordsOverride || from}
-            to={toCoordsOverride || to}
+            from={fromCoordsOverride ?? from}
+            to={toCoordsOverride ?? to}
             type={connection.type}
             vector={!toCoordsOverride && !fromCoordsOverride ? true : false}
             className={classes}

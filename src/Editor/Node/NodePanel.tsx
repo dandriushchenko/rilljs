@@ -53,7 +53,7 @@ const NodePanelImpl = (props: NodePanelProps) => {
         return calcNodeAndPortsLayout(node, design, themeCanvas, false);
     }, [node, themeCanvas, design]);
 
-    function onMouseDown(event: React.MouseEvent<Element>) {
+    function onMouseDown(event: React.MouseEvent) {
         const isShiftPressed = event.shiftKey;
         actions.selectNodes(node.nodeID, !isShiftPressed, isShiftPressed);
 
@@ -71,7 +71,7 @@ const NodePanelImpl = (props: NodePanelProps) => {
         actions.highlightNode(undefined);
     }
 
-    const translate = `translate(${design.x},${design.y})`;
+    const translate = `translate(${String(design.x)},${String(design.y)})`;
 
     const iconOffset = themeCanvas.node.error.offset;
     const flowsIn = node.getFlowInputs();
@@ -197,7 +197,7 @@ const NodePanelImpl = (props: NodePanelProps) => {
             {
                 invalid &&
                 <g
-                    transform={`translate(${design.width + iconOffset}, ${-iconOffset})`}
+                    transform={`translate(${String(design.width + iconOffset)}, ${String(-iconOffset)})`}
                     className={themeCanvas.node.error.class}
                 >
                     {

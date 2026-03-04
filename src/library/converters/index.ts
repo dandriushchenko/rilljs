@@ -10,4 +10,4 @@ export const BuiltinConverters = [
     boolConverter,
     numberConverter,
     textConverter
-] as unknown as Array<ConverterFrom<unknown, unknown> & ConverterTo<unknown, unknown>>;
+] as unknown as (ConverterFrom & ConverterTo)[];

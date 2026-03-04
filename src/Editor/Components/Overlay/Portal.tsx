@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 
 import {type Theme, ThemeContext} from '../../theme';
 
-export type PortalProps = Record<string, never>;
+export type PortalProps = Record<string, unknown>;
 export function Portal(props: React.PropsWithChildren<PortalProps>): React.ReactPortal | null {
 
     const theme = useContext<Theme>(ThemeContext).classes;

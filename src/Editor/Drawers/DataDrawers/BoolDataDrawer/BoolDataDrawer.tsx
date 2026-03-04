@@ -17,6 +17,7 @@ export function BoolDataDrawer(props: BoolDataDrawerProps) {
     const { readonly } = options;
     const [, redraw] = useState({});
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     function onChange(event: React.FormEvent<HTMLInputElement>) {
         const v = event.currentTarget.checked;
         onValueChange(v);
@@ -41,6 +42,7 @@ export function BoolDataDrawer(props: BoolDataDrawerProps) {
                 disabled={readonly}
             />
             {
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 (help || labelHelp) &&
                 <div className={theme.classes.help}>
                     {labelHelp}

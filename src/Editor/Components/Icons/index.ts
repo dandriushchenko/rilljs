@@ -24,21 +24,21 @@ export type IconName =
     'ungroup-objects' |
     'remove' |
     'plus' |
-    'minus' |
-    'cross' |
+    'minus' 
+     |
     'drag-handle-horizontal' |
-    'drag-handle-vertical' |
-    'cross' |
-    'duplicate' |
+    'drag-handle-vertical' 
+     
+     |
     'search-text' |
-    'tick' |
-    'cross' |
+    'tick' 
+     |
     'media' |
     'numerical' |
     'citation' |
     'warning-sign' |
-    'info-sign' |
-    'duplicate' |
+    'info-sign' 
+     |
     'trash' |
     'caret-down' |
     'caret-left' |

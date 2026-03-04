@@ -48,6 +48,7 @@ export function numberSanitizer(rules: {
             adjusted = rules.max;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (rules?.integer) {
             adjusted = Math.floor(adjusted);
         }

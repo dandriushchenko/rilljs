@@ -20,25 +20,21 @@ import { newID } from '../utils';
 import { type ConverterFrom, type ConverterTo } from '../data';
 
 export interface GraphJSON {
-    nodes: {
-        [instance: string]: NodeJSON;
-    };
-    transitions: {
-        [instance: string]: ConnectionJSON;
-    }
+    nodes: Record<string, NodeJSON>;
+    transitions: Record<string, ConnectionJSON>
 }
 
 export class Graph {
     protected nodes: Node[];
-    protected nodesMap: {[instance: string]: Node};
+    protected nodesMap: Record<string, Node>;
     protected connections: Connection[];
-    protected connectionsMap: {[instance: string]: Connection};
+    protected connectionsMap: Record<string, Connection>;
     protected convertersFrom: ConverterFrom[];
     protected convertersTo: ConverterTo[];
-    protected convertersMap: {[fromToType: string]: {
+    protected convertersMap: Record<string, {
         from: ConverterFrom;
         to: ConverterTo;
-    }};
+    }>;
 
     constructor(
         nodes: Node[] = [],
@@ -60,7 +56,9 @@ export class Graph {
             const fromTypes = typeof c.fromTypes === 'string' ? [c.fromTypes] : c.fromTypes;
             fromTypes.forEach(ft => {
                 const key = this.getConverterKey(ft, baseID);
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 const existing = this.convertersMap[key] || {};
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 if (existing.from) {
                     throw new Error(`Converter between types ${ft} and ${baseID} is ambiguous. Provided multiple times.`);
                 }
@@ -73,7 +71,9 @@ export class Graph {
             const toTypes = typeof c.toTypes === 'string' ? [c.toTypes] : c.toTypes;
             toTypes.forEach(tt => {
                 const key = this.getConverterKey(baseID, tt);
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 const existing = this.convertersMap[key] || {};
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 if (existing.to) {
                     throw new Error(`Converter between types ${baseID} and ${tt} is ambiguous. Provided multiple times.`);
                 }
@@ -94,22 +94,25 @@ export class Graph {
         return this.convertersMap[this.getConverterKey(from, to)];
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     getConverterMethod<CV = unknown, FV = unknown, TV = unknown, M = unknown>(from: string, to: string, meta?: M) {
         const converter = this.getConverter(from, to);
         if (!converter) {
             return undefined;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (converter.from) {
             const c = converter.from as ConverterFrom<CV, FV, M>;
             return (f: FV, m?: M): CV => {
-                return c.convertFrom(f, from, m || meta);
+                return c.convertFrom(f, from, m ?? meta);
             };
         } else
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (converter.to) {
             const c = converter.to as ConverterTo<CV, TV, M>;
             return (value: CV, m?: M): TV => {
-                return c.convertTo(value, to, m || meta);
+                return c.convertTo(value, to, m ?? meta);
             };
         }
         return undefined;
@@ -147,6 +150,7 @@ export class Graph {
 
         try {
             const flow = input ? node.getFlowInput(src.port) : node.getFlowOutput(src.port);
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!flow) {
                 return undefined;
             }
@@ -167,6 +171,7 @@ export class Graph {
         return this.getNodeValuePort(src, false);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     protected getNodeValuePort<T = IOFlow>(src: Port, input: boolean): { node: Node, value: T } | undefined {
         const node = this.getNode(src.node);
         if (!node) {
@@ -175,6 +180,7 @@ export class Graph {
 
         try {
             const value = input ? node.getValueInput(src.port) : node.getValueOutput(src.port);
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!value) {
                 return undefined;
             }
@@ -236,11 +242,13 @@ export class Graph {
         }
 
         const fromPort = fromNode.getValueOutput(from.port);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!fromPort) {
             throw new InvalidPort(fromNode.nodeID, from.port);
         }
 
         const toPort = toNode.getValueInput(to.port);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!toPort) {
             throw new InvalidPort(toNode.nodeID, to.port);
         }
@@ -305,6 +313,7 @@ export class Graph {
             throw new InstanceDoesntExist(id);
         }
         this.connections = this.connections.filter(n => n.id !== id);
+                                   // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete this.connectionsMap[id];
     }
 
@@ -316,27 +325,29 @@ export class Graph {
         this.nodesMap[node.nodeID] = node;
     }
 
-    removeNode(node: Node | string, removeConnections: boolean = true) {
+    removeNode(node: Node | string, removeConnections = true) {
         const id = typeof node === 'string' ? node : node.nodeID;
         if (!(id in this.nodesMap)) {
             throw new InstanceDoesntExist(id);
         }
         this.nodes = this.nodes.filter(n => n.nodeID !== id);
+                             // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete this.nodesMap[id];
 
         // Remove referenced connections as well
         if (removeConnections) {
             const referenced = this.connections.filter(c => c.source.node === id || c.destination.node === id);
-            referenced.forEach(r => this.removeConnection(r));
+            referenced.forEach(r => { this.removeConnection(r); });
         }
     }
 
     toJSON(): GraphJSON {
-        const nodes: {[instance: string]: NodeJSON} = {};
+        const nodes: Record<string, NodeJSON> = {};
         Object.values(this.nodes).forEach(n => nodes[n.nodeID] = n.toJSON());
 
         return {
             nodes,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             transitions: JSON.parse(JSON.stringify(this.connectionsMap))
         };
     }
@@ -352,6 +363,7 @@ export class Graph {
         this.nodesMap = {};
         Object.values(json.nodes).forEach(n => {
             const node = registry.create(n.id);
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!node) {
                 throw new NodeInvalidSerializedTypeError(n.id, n);
             }

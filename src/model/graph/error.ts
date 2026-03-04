@@ -17,7 +17,7 @@ export class InstanceDoesntExist extends Error {
 
 export class ConnectionIsNotValid extends Error {
     constructor(conn: Connection, msg?: string) {
-        super(`Connection is not valid: ${JSON.stringify(conn)} ${msg || ''}`);
+        super(`Connection is not valid: ${JSON.stringify(conn)} ${msg ?? ''}`);
     }
 }
 

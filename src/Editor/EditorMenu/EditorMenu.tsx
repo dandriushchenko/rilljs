@@ -55,7 +55,7 @@ export function EditorMenu(props: EditorMenuProps) {
                         <MenuItem
                             icon="cross"
                             onClick={onDelete}
-                            text={`Delete ${selected > 1 ? `Selected (${selected})` : ''}`}
+                            text={`Delete ${selected > 1 ? `Selected (${String(selected)})` : ''}`}
                         />
                     </>
                 }

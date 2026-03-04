@@ -22,7 +22,7 @@ export function Switch(props: SwitchProps) {
                 className={theme.indicatorChild}
             >
                 <div className={theme.switchInnerText}>
-                    {innerLabelChecked ? innerLabelChecked : innerLabel}
+                    {innerLabelChecked ?? innerLabel}
                 </div>
             </div>,
             <div

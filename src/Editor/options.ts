@@ -43,8 +43,10 @@ export interface ValidationOptions {
 }
 
 export interface DrawersOptions {
-    nodes: {[key: string]: React.FunctionComponent<NodeDrawerProps> | React.ClassicComponentClass<NodeDrawerProps>};
-    data: {[key: string]: React.FunctionComponent<DataDrawerProps> | React.ClassicComponentClass<DataDrawerProps>};
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    nodes: Record<string, React.FunctionComponent<NodeDrawerProps> | React.ClassicComponentClass<NodeDrawerProps>>;
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    data: Record<string, React.FunctionComponent<DataDrawerProps> | React.ClassicComponentClass<DataDrawerProps>>;
 }
 
 export const defaultDrawers: DrawersOptions = {
@@ -100,10 +102,10 @@ export function useOptions(options?: Partial<Options & {design?: Partial<DesignO
     return useMemo(() => {
         return {
             ...defaultOptions,
-            ...(options || {}),
+            ...(options ?? {}),
             design: {
                 ...defaultDesignOptions,
-                ...((options && options.design) || {})
+                ...((options?.design) ?? {})
             }
         };
     }, [options])

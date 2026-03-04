@@ -10,7 +10,7 @@ export interface MenuItemProps {
     icon?: IconName;
     text?: string;
 
-    onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export const MenuItem = React.memo((props: React.PropsWithChildren<MenuItemProps>) => {

@@ -11,12 +11,12 @@ export class DatumInvalidTypeError extends DataError {
 
 export class ConverterRuntimeConvertToFailure extends DataError {
     constructor(baseType: string, toType: string, error: unknown) {
-        super(`Unexpected runtime failure in converter: ${baseType}, during conversion to ${toType}. Error: ${error}`);
+        super(`Unexpected runtime failure in converter: ${baseType}, during conversion to ${toType}. Error: ${String(error)}`);
     }
 }
 
 export class ConverterRuntimeConvertFromFailure extends DataError {
     constructor(baseType: string, fromType: string, error: unknown) {
-        super(`Unexpected runtime failure in converter: ${baseType}, during conversion from ${fromType}. Error: ${error}`);
+        super(`Unexpected runtime failure in converter: ${baseType}, during conversion from ${fromType}. Error: ${String(error)}`);
     }
 }

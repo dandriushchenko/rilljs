@@ -22,13 +22,14 @@ export class Wait extends Node<WaitExecutor> {
         }
     }
 
-    constructor(branches: number = 1) {
+    constructor(branches = 1) {
         super();
 
         this.onBranchesChange = this.onBranchesChange.bind(this);
         this.branchesValue = new RNumber(branches);
         this.addValueInternal('inputs', this.branchesValue, {
             name: 'Wait Inputs',
+            // eslint-disable-next-line @typescript-eslint/unbound-method
             onChange: this.onBranchesChange,
             sanitize: numberSanitizer({
                 min: 0,
@@ -42,7 +43,7 @@ export class Wait extends Node<WaitExecutor> {
     }
 
     public getInputName(index: number): string {
-        return `in_${index + 1}`;
+        return `in_${String(index + 1)}`;
     }
 
     protected updateInputs(num: number) {
@@ -53,7 +54,7 @@ export class Wait extends Node<WaitExecutor> {
         }
         // Add new ones
         for (let i = this.flowIn.length; i < num; i++) {
-            this.addFlowInput(this.getInputName(i), `${i + 1}`);
+            this.addFlowInput(this.getInputName(i), String(i + 1));
         }
     }
 

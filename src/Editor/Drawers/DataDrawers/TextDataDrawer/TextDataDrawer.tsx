@@ -16,6 +16,7 @@ export function TextDataDrawer(props: TextDataDrawerProps) {
     const { readonly } = options;
     const [, redraw] = useState({});
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     function onChange(event: React.FormEvent<HTMLInputElement>) {
         const v = event.currentTarget.value;
         onValueChange(v);

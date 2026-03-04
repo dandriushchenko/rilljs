@@ -38,7 +38,7 @@ export const PortZone = React.memo((props: PortZoneProps) => {
         );
     }, [className, theme, droppable, active]);
 
-    const onMouseEnter = useCallback((event: React.MouseEvent<Element>) => {
+    const onMouseEnter = useCallback((event: React.MouseEvent) => {
         if (readonly) {
             return;
         }
@@ -59,7 +59,7 @@ export const PortZone = React.memo((props: PortZoneProps) => {
         }
     }, [readonly, actions, port]);
 
-    const onMouseLeave = useCallback((event: React.MouseEvent<Element>) => {
+    const onMouseLeave = useCallback((event: React.MouseEvent) => {
         if (readonly) {
             return;
         }
@@ -75,7 +75,7 @@ export const PortZone = React.memo((props: PortZoneProps) => {
         setDroppable(false);
     }, [readonly, actions, droppable]);
 
-    const onMouseDown = useCallback((event: React.MouseEvent<Element>) => {
+    const onMouseDown = useCallback((event: React.MouseEvent) => {
         if (readonly) {
             return;
         }

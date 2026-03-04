@@ -6,10 +6,10 @@ export interface ModelChunkJSON {
     // TODO This piece has to be serializable as a type,
     // so we don't have to copy this structure. Plus typescript
     // will guarantee fullness of it.
-    nodesDesign: {[key: string]: {
+    nodesDesign: Record<string, {
         pos: Coords;
         color?: string;
-    }};
+    }>;
     connections: ConnectionJSON[];
     ref: 'rill',
     version: 1
@@ -22,15 +22,16 @@ export function copyModelSelectionJSON(actions: ModelActions): ModelChunkJSON {
 
 export function copyModelJSON(actions: ModelActions, nodesToCopy: ModelNodeState[]): ModelChunkJSON {
     const nodes = nodesToCopy.map(n => n.node);
-    const nodesDesign: {[key: string]: {pos: Coords, color?: string}} = {};
+    const nodesDesign: Record<string, {pos: Coords, color?: string}> = {};
     nodesToCopy.forEach(n => nodesDesign[n.node.nodeID] = {pos: {x: n.design.x, y: n.design.y}, color: n.design.color});
     const nodesJSON = nodes.map(n => n.toJSON());
     const nodesIDs = nodes.map(n => n.nodeID);
     const isConnectionBetweenNodes = (c: ModelConnectionState) =>
-    nodesIDs.indexOf(c.connection.source.node) >= 0 &&
-        nodesIDs.indexOf(c.connection.destination.node) >= 0 ? true : false;
+    nodesIDs.includes(c.connection.source.node) &&
+        nodesIDs.includes(c.connection.destination.node) ? true : false;
     const connections = actions.findConnections(isConnectionBetweenNodes).map(c => c.connection);
     // Make a clone of it
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const cbData: ModelChunkJSON = JSON.parse(JSON.stringify({
         nodes: nodesJSON,
         nodesDesign,
@@ -43,17 +44,21 @@ export function copyModelJSON(actions: ModelActions, nodesToCopy: ModelNodeState
 
 export function pasteModelJSON(chunk: ModelChunkJSON, actions: ModelActions, registry: Registry): boolean {
     if (
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         chunk.ref !== 'rill' || chunk.version !== 1 ||
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         !chunk.nodes || !Array.isArray(chunk.nodes) ||
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         !chunk.connections || !Array.isArray(chunk.connections)) {
         return false;
     }
 
     // before we proceed, make a clone of the chunk model
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const json: ModelChunkJSON = JSON.parse(JSON.stringify(chunk));
 
-    const nodesRemap: {[key: string]: string} = {};
-    const nodesRemapReverse: {[key: string]: string} = {};
+    const nodesRemap: Record<string, string> = {};
+    const nodesRemapReverse: Record<string, string> = {};
 
     let minX: number | undefined;
     let minY: number | undefined;
@@ -107,14 +112,17 @@ export function pasteModelJSON(chunk: ModelChunkJSON, actions: ModelActions, reg
 
     const nodesWithDesign = nodes.map(n => {
         const design = json.nodesDesign[nodesRemapReverse[n.nodeID]];
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!design) {
             throw new Error(`No design specified for node: ${n.nodeID}`);
         }
         return {
             node: n,
             pos: {
-                x: - pan.x + BasicShift + (design.pos.x - (minX as number)),
-                y: - pan.y + BasicShift + (design.pos.y - (minY as number))
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                x: - pan.x + BasicShift + (design.pos.x - (minX!)),
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                y: - pan.y + BasicShift + (design.pos.y - (minY!))
             }
         };
     });

@@ -8,10 +8,10 @@ export interface NodeLayoutPort {
 }
 
 export interface NodeLayout {
-    flowsIn: {[key: string]: NodeLayoutPort};
-    flowsOut: {[key: string]: NodeLayoutPort};
-    valuesIn: {[key: string]: NodeLayoutPort};
-    valuesOut: {[key: string]: NodeLayoutPort};
+    flowsIn: Record<string, NodeLayoutPort>;
+    flowsOut: Record<string, NodeLayoutPort>;
+    valuesIn: Record<string, NodeLayoutPort>;
+    valuesOut: Record<string, NodeLayoutPort>;
     height: number;
     classCaption: Coords;
 }

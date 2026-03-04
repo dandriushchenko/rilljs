@@ -7,6 +7,7 @@ const DEFAULT_SIDE_ELEMENT_WIDTH = 10;
 
 export interface ControlledProps {
     defaultValue?: string;
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     onChange?: React.FormEventHandler<HTMLElement>;
     value?: string | number;
 }

@@ -5,14 +5,14 @@ import {
     RegistryUnknownClassError
 } from './error';
 
-type NodesMap = {[key: string]: {
+type NodesMap = Record<string, {
     ctor: NodeConstructor,
     sample: Node
-}};
+}>;
 
-type DataMap = {[key: string]: {
+type DataMap = Record<string, {
     ctor: DatumConstructor
-}};
+}>;
 
 export class Registry {
     protected nodesMap: NodesMap;
@@ -21,8 +21,8 @@ export class Registry {
     constructor(nodes: NodeConstructor[] = [], data: DatumConstructor[] = []) {
         this.nodesMap = {};
         this.dataMap = {};
-        nodes.forEach(n => Registry.registerNode(n, this.nodesMap));
-        data.forEach(d => Registry.registerDatum(d, this.dataMap));
+        nodes.forEach(n => { Registry.registerNode(n, this.nodesMap); });
+        data.forEach(d => { Registry.registerDatum(d, this.dataMap); });
     }
 
     registerNode(node: NodeConstructor) {
@@ -61,7 +61,7 @@ export class Registry {
             .filter(n => predicate ? predicate(n.sample) : true)
             .filter(n =>
                 !tl || tl === '' ||
-                `${n.sample.nodeID} ${n.sample.defn.name || ''} ${n.sample.defn.description || ''}`.toLowerCase().indexOf(tl) >= 0
+                `${n.sample.nodeID} ${n.sample.defn.name ?? ''} ${n.sample.defn.description ?? ''}`.toLowerCase().includes(tl)
             )
             .map(n => n.sample);
     }
@@ -73,13 +73,15 @@ export class Registry {
             .filter(n => predicate ? predicate(n.ctor.defn) : true)
             .filter(n =>
                 !tl || tl === '' ||
-                `${n.ctor.defn.id} ${n.ctor.defn.name || ''} ${n.ctor.defn.description || ''}`.toLowerCase().indexOf(tl) >= 0
+                `${n.ctor.defn.id} ${n.ctor.defn.name ?? ''} ${n.ctor.defn.description ?? ''}`.toLowerCase().includes(tl)
             )
             .map(n => n.ctor.defn);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     create<T extends Node>(id: string): T {
         const details = this.nodesMap[id];
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!details) {
             throw new RegistryUnknownClassError(id);
         }

@@ -40,7 +40,7 @@ export function useControlGroupLabels<DT = unknown, T extends Datum<DT> = Datum<
         const help = config.description ?
             typeof config.description === 'string' ? config.description : config.description(value.value)
             : undefined;
-        const label = config.name || val.id;
+        const label = config.name ?? val.id;
         return {
             label,
             labelHelp,

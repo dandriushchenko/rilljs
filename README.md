@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# RillJS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the RillJS project!
 
-Currently, two official plugins are available:
+This is a React node-based editor designed for high performance and extensibility.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **Visual Node Editor:** Create and connect nodes logically.
+- **Fast Refresh:** Built on top of Vite and React SWC/Babel.
+- **Strictly Typed:** Deeply integrated with modern TypeScript and ESLint type-aware rules.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Building as an NPM Package
 
-## Expanding the ESLint configuration
+To compile the project and generate the output bundle along with TypeScript definitions `(.d.ts)`, run:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+This generates the unified bundle inside the `dist/` directory, optimized for usage in other codebases as both an ES Module (`dist/rilljs.es.js`) and a UMD module (`dist/rilljs.umd.js`).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Using RillJS locally in another project
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+If you want to consume this package inside a local application without publishing it to NPM, you can link it or install it using a local file path.
+
+**Option 1: Using `pnpm link` (Recommended for active dev)**
+Inside `rilljs`:
+
+```bash
+pnpm build
+pnpm link --global
 ```
+
+Inside your target project:
+
+```bash
+pnpm link --global rilljs
+```
+
+**Option 2: Using a local file path dependency**
+Inside your target project's directory, simply point it to the local folder:
+
+```bash
+pnpm add ../path/to/rilljs
+```
+
+Make sure you run `pnpm build` in `rilljs` before starting your target project or after making changes to RillJS!

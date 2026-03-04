@@ -35,15 +35,15 @@ export interface INode<E extends Executor> extends NodeExecutor<E> {
     fromJSON(data: NodeJSON): void;
 }
 
-export type NodeConstructor = { new(): Node };
+export type NodeConstructor = new() => Node
 
 export interface NodeJSON {
     class: string;
     id: string;
     name?: string;
-    inputs: { [key: string]: unknown };
-    outputs: { [key: string]: unknown };
-    internal: { [key: string]: unknown };
+    inputs: Record<string, unknown>;
+    outputs: Record<string, unknown>;
+    internal: Record<string, unknown>;
 }
 
 export abstract class Node<E extends Executor = Executor> implements INode<E> {
@@ -181,7 +181,7 @@ export abstract class Node<E extends Executor = Executor> implements INode<E> {
         });
     }
 
-    protected addFlowThrough(flowIn: boolean = true, flowOut: boolean = true) {
+    protected addFlowThrough(flowIn = true, flowOut = true) {
         if (flowIn) {
             this.addFlowInput(Node.defaultFlowThroughInputID, 'In');
         }
@@ -198,10 +198,10 @@ export abstract class Node<E extends Executor = Executor> implements INode<E> {
         const internal = {
             value,
             id,
-            config: config || {}
+            config: config ?? {}
         };
 
-        this.internal.push(internal as IOValue<unknown, Datum<unknown>>);
+        this.internal.push(internal as IOValue<unknown, Datum>);
         return internal;
     }
 
@@ -213,9 +213,9 @@ export abstract class Node<E extends Executor = Executor> implements INode<E> {
         const input = {
             value,
             id,
-            config: config || {}
+            config: config ?? {}
         };
-        this.inputs.push(input as InputValue<unknown, Datum<unknown>>);
+        this.inputs.push(input as InputValue<unknown, Datum>);
         return input;
     }
 
@@ -227,13 +227,13 @@ export abstract class Node<E extends Executor = Executor> implements INode<E> {
         const output = {
             value,
             id,
-            config: config || {}
+            config: config ?? {}
         };
-        this.outputs.push(output as OutputValue<unknown, Datum<unknown>>);
+        this.outputs.push(output as OutputValue<unknown, Datum>);
         return output;
     }
 
-    protected addFlowInput(id: string, name: string = 'In') {
+    protected addFlowInput(id: string, name = 'In') {
         if (this.flowIn.find(i => i.id === id)) {
             throw new NodeInputAlreadyExistsError(id, this);
         }
@@ -249,7 +249,7 @@ export abstract class Node<E extends Executor = Executor> implements INode<E> {
         this.flowIn = this.flowIn.filter(i => i.id !== id);
     }
 
-    protected addFlowOutput(id: string, name: string = 'Out') {
+    protected addFlowOutput(id: string, name = 'Out') {
         if (this.flowOut.find(i => i.id === id)) {
             throw new NodeOutputAlreadyExistsError(id, this);
         }
@@ -266,11 +266,11 @@ export abstract class Node<E extends Executor = Executor> implements INode<E> {
     }
 
     protected toJSONImpl(): NodeJSON {
-        const inputs: { [key: string]: unknown } = {};
-        const outputs: { [key: string]: unknown } = {};
-        const internal: { [key: string]: unknown } = {};
+        const inputs: Record<string, unknown> = {};
+        const outputs: Record<string, unknown> = {};
+        const internal: Record<string, unknown> = {};
 
-        const valueToJSON = (iov: IOValue, dest: { [key: string]: unknown }) => {
+        const valueToJSON = (iov: IOValue, dest: Record<string, unknown>) => {
             if (typeof iov.value === 'undefined') {
                 return;
             }

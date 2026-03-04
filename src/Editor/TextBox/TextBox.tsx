@@ -92,7 +92,7 @@ export const TextBox = React.memo((props: TextBoxProps) => {
         }
 
         const data = computeTextDimensions(text, overflow !== TextOverflow.Overflow);
-        const wordsLines: Array<{line: string, width: number}> = [];
+        const wordsLines: {line: string, width: number}[] = [];
 
         switch (overflow) {
             case TextOverflow.Overflow:

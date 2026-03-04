@@ -2,7 +2,7 @@ import { type Coords } from '../../../model';
 import { type Action } from '../action';
 
 export interface MoveNodes extends Action {
-    nodes: Array<{id: string, pos: Coords}>;
+    nodes: {id: string, pos: Coords}[];
     type: 'MoveNodes';
 }
 

@@ -82,7 +82,7 @@ export const FlowPort = React.memo((props: FlowPortProps) => {
                     className={theme.text}
                 />
             }
-            <use xlinkHref={`#` + IconsNames.Arrow} transform={`translate(${iconPos.x},${iconPos.y})`} />
+            <use xlinkHref={`#` + IconsNames.Arrow} transform={`translate(${String(iconPos.x)},${String(iconPos.y)})`} />
         </g>
     );
 });

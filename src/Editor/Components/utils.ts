@@ -1,59 +1,67 @@
-
 export function mergeDeep(target: unknown, source: unknown, clone?: boolean): unknown {
     const isObject = (obj: unknown): obj is Record<string, unknown> => typeof obj === 'object' && obj !== null;
-  
+
     if (!isObject(target) || !isObject(source)) {
-      return source;
+        return source;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const res = clone ? JSON.parse(JSON.stringify(target)) : target;
     Object.keys(source).forEach(key => {
-      const targetValue = target[key];
-      const sourceValue = source[key];
-  
-      if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
-        res[key] = targetValue.concat(sourceValue);
-      } else if (isObject(targetValue) && isObject(sourceValue)) {
-        res[key] = mergeDeep(targetValue, sourceValue);
-      } else {
-        res[key] = sourceValue;
-      }
+        const targetValue = target[key];
+        const sourceValue = source[key];
+
+        if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            res[key] = targetValue.concat(sourceValue);
+        } else if (isObject(targetValue) && isObject(sourceValue)) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            res[key] = mergeDeep(targetValue, sourceValue);
+        } else {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            res[key] = sourceValue;
+        }
     });
-  
+
     return res;
 }
 
 
-export function mergeClassesRaw(...classes: Array<unknown>) {
+export function mergeClassesRaw(...classes: unknown[]) {
     const res: string[] = [];
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let ci = 0; ci < classes.length; ci++) {
         const c = classes[ci];
         switch (typeof c) {
-            case 'number': res.push(c.toString()); break;
-            case 'string': res.push(c); break;
+            case 'number':
+                res.push(c.toString());
+                break;
+            case 'string':
+                res.push(c);
+                break;
             case 'object':
                 if (Array.isArray(c)) {
-                    const ca = c as Array<unknown>;
+                    const ca = c as unknown[];
                     res.push(
                         ...mergeClassesRaw(...ca)
                     );
-                } else if (c !== null){
-                    const co = c as {[key: string]: unknown};
+                } else if (c !== null) {
+                    const co = c as Record<string, unknown>;
                     Object.keys(c).forEach(key => {
                         if (co[key]) {
                             res.push(key);
                         }
                     });
                 }
-            break;
+                break;
             default:
-                // This is a wrong type, ignore it
+            // This is a wrong type, ignore it
         }
     }
     return res;
 }
 
-export function mergeClasses(...classes: Array<unknown>) {
+export function mergeClasses(...classes: unknown[]) {
     const res: string[] = mergeClassesRaw(classes);
     return res.join(' ');
 }
@@ -72,17 +80,16 @@ export function bringFocus(container: HTMLElement | undefined | null) {
         if (!container || document.activeElement == null) {
             return;
         }
-  
+
         const isFocusOutside = !container.contains(document.activeElement);
         if (isFocusOutside) {
             // autofocus first, then other elements
-            const autofocusEl = container.querySelector("[autofocus]") as HTMLElement;
-            const wrapperEl = container.querySelector("[tabindex]") as HTMLElement;
+            const autofocusEl = container.querySelector("[autofocus]") as unknown as (HTMLElement | null);
+            const wrapperEl = container.querySelector("[tabindex]") as unknown as (HTMLElement | null);
             if (autofocusEl != null) {
-              autofocusEl.focus();
-            } else
-            if (wrapperEl != null) {
-              wrapperEl.focus();
+                autofocusEl.focus();
+            } else if (wrapperEl != null) {
+                wrapperEl.focus();
             }
         }
     });
@@ -92,12 +99,13 @@ export function scrollIntoView(ref: HTMLElement | undefined | null, index: numbe
     if (!ref) {
         return false;
     }
-    
+
     if (index >= ref.children.length) {
         return false;
     }
 
     const childElement = ref.children.item(index) as HTMLElement;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!childElement) {
         return false;
     }
@@ -105,9 +113,9 @@ export function scrollIntoView(ref: HTMLElement | undefined | null, index: numbe
     function pixelsToNumber(value: string | null) {
         return value == null ? 0 : parseInt(value.slice(0, -2), 10);
     }
-        
+
     function getPadding(el: HTMLElement) {
-        const { paddingTop, paddingBottom } = getComputedStyle(el);
+        const {paddingTop, paddingBottom} = getComputedStyle(el);
         return {
             paddingBottom: pixelsToNumber(paddingBottom),
             paddingTop: pixelsToNumber(paddingTop),
@@ -131,7 +139,7 @@ export function scrollIntoView(ref: HTMLElement | undefined | null, index: numbe
     } = getPadding(ref);
 
     const bottomEdge = activeTop + activeHeight + paddingBottom - parentOffsetTop;
-    const activeTopEdge = activeTop - paddingTop - parentOffsetTop;        
+    const activeTopEdge = activeTop - paddingTop - parentOffsetTop;
 
     if (bottomEdge >= parentScrollTop + parentHeight) {
         // align item bottom to the ref bottom

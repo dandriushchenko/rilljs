@@ -67,6 +67,7 @@ export const Overlay = React.memo((props: React.PropsWithChildren<OverlayProps>)
         return;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (event.which === Keys.Esc) {
         onClose();
         event.preventDefault();

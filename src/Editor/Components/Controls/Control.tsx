@@ -15,6 +15,7 @@ export interface ControlProps extends BaseProps {
     typeClassName?: string;
     type?: 'checkbox' | 'radio';
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     onChange?: React.FormEventHandler<HTMLInputElement>;
 }
 

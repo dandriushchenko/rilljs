@@ -40,7 +40,7 @@ export function ValuePort(props: ValuePortProps) {
             />
             <TextBox
                 pos={textRect}
-                text={value.config.name || value.id}
+                text={value.config.name ?? value.id}
                 width={textRect.width}
                 height={textRect.height}
                 verticalAlignment={TextVerticalAlignment.Middle}

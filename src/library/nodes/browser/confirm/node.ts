@@ -15,7 +15,7 @@ export class BrowserConfirm extends Node<BrowserConfirmExecutor> {
         }
     }
 
-    constructor(message: string = '') {
+    constructor(message = '') {
         super();
 
         this.message = new Text(message);

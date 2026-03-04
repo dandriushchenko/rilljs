@@ -41,8 +41,10 @@ export const Grid = React.memo((props: React.PropsWithChildren<GridProps>) => {
     const [mouseDownPos, setMouseDownPos] = useState<Coords>();
     const [state, setState] = useState<GridState>(GridState.None);
 
-    function onMouseDown(event: React.MouseEvent<Element>) {
+    function onMouseDown(event: React.MouseEvent) {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const leftClick = event.nativeEvent.which === 1;
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const rightClick = event.nativeEvent.which === 3;
 
         if (!leftClick || disabled) {
@@ -86,6 +88,7 @@ export const Grid = React.memo((props: React.PropsWithChildren<GridProps>) => {
             event.stopPropagation();
     
             const isNegative = (n: number) => {
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-conversion
                 return ((n = +n) || 1 / n) < 0;
             };
     
@@ -210,7 +213,7 @@ export const Grid = React.memo((props: React.PropsWithChildren<GridProps>) => {
 
     return (
         <g
-            transform={`scale(${scale}, ${scale}),translate(${coords.x},${coords.y})`}
+            transform={`scale(${String(scale)}, ${String(scale)}),translate(${String(coords.x)},${String(coords.y)})`}
         >
             <rect
                 x={gridOffset.x}

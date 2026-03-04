@@ -12,7 +12,7 @@ export interface LineProps extends BaseProps {
     type: ConnectionType;
     vector: boolean;
 
-    onClick?: (event: React.MouseEvent<SVGElement, MouseEvent>) => void;
+    onClick?: (event: React.MouseEvent<SVGElement>) => void;
     onAnimationStart?: (event: React.AnimationEvent<SVGElement>) => void;
     onAnimationEnd?: (event: React.AnimationEvent<SVGElement>) => void;
 }
@@ -34,7 +34,9 @@ function LineImpl(props: LineProps) {
     } = props;
 
     const isReversed = false; // toOriginal.x < fromOriginal.x;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const to = isReversed ? fromOriginal : toOriginal;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const from = isReversed ? toOriginal : fromOriginal;
 
     const halfX = Math.abs((to.x - from.x) / 3 * 2);
@@ -103,7 +105,7 @@ function LineImpl(props: LineProps) {
         return (
             <path
                 style={style}
-                d={`M${from.x},${from.y} L${from.x + extrude},${from.y} C${from.x + halfX},${from.y} ${to.x - halfX},${to.y} ${to.x - extrude},${to.y} L${to.x},${to.y}`}
+                d={`M${String(from.x)},${String(from.y)} L${String(from.x + extrude)},${String(from.y)} C${String(from.x + halfX)},${String(from.y)} ${String(to.x - halfX)},${String(to.y)} ${String(to.x - extrude)},${String(to.y)} L${String(to.x)},${String(to.y)}`}
                 markerEnd={vector ? undefined : ''}
                 className={classes}
                 onClick={onClick}

@@ -15,8 +15,8 @@ export type DesignViewMode = typeof DesignViewMode[keyof typeof DesignViewMode];
 
 export interface Design {
     groups: GroupDesign[];
-    nodes: { [instance: string]: NodeDesign };
-    connections: { [instance: string]: ConnectionDesign };
+    nodes: Record<string, NodeDesign>;
+    connections: Record<string, ConnectionDesign>;
     pan: Coords;
     scale: number;
     mode: DesignViewMode;
@@ -29,7 +29,7 @@ export function createDefaultNodeDesign(n: Node): NodeDesign {
         x: 0,
         y: 0,
         width: 200,
-        height: (design && design.height) || 0   // Default to minHeight in theme
+        height: (design?.height) ?? 0   // Default to minHeight in theme
     };
 }
 

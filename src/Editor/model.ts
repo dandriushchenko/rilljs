@@ -75,18 +75,18 @@ export interface ActionResult<D = void> {
     redraw?: boolean;
 }
 
-export type ModelView = {
+export interface ModelView {
     // Original objects
     graph: Graph;
     design: Design;
 
     // Nodes collections
     nodesOrder: string[];
-    nodes: {[key: string]: ModelNodeState};
+    nodes: Record<string, ModelNodeState>;
     nodesSelected: string[];
 
     // Connections
-    connections: {[key: string]: ModelConnectionState};
+    connections: Record<string, ModelConnectionState>;
     editingConnection?: {
         type: ConnectionType;
         isAnchorOut: boolean;
@@ -108,17 +108,18 @@ export type ModelView = {
     // Inspect mode
     inspectMode: boolean;
     nodeHighlight?: string;
-};
+}
 
 export interface ModelHooks {
     onPortsConnected: (connectionID: string, from: Port, to: Port) => void;
     onRerender?: () => void;
 }
 
-export type ModelActions = {
+export interface ModelActions {
     undo: () => boolean;
     redo: () => boolean;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     do: <D = unknown>(action: ActionType) => D | undefined;
 
     // Editor View
@@ -147,11 +148,11 @@ export type ModelActions = {
 
     // Nodes Actions
     createNode: (node: Node, pos?: Coords) => void;
-    createNodes: (nodes: Array<{node: Node, pos?: Coords}>) => void;
+    createNodes: (nodes: {node: Node, pos?: Coords}[]) => void;
     moveNode: (id: string, pos: Coords) => void;
-    moveNodes: (nodes: Array<{id: string, pos: Coords}>) => void;
+    moveNodes: (nodes: {id: string, pos: Coords}[]) => void;
     shiftNode: (id: string, shift: Partial<Coords>) => void;
-    shiftNodes: (nodes: Array<{id: string, shift: Partial<Coords>}>) => void;
+    shiftNodes: (nodes: {id: string, shift: Partial<Coords>}[]) => void;
     deleteNodes: (nodes: string[] | string) => void;
 
     // Connection Actions
@@ -200,6 +201,7 @@ export function getPerfectPan(g: Graph, d: Design): Coords {
     const nodes = g.getNodes();
     for (const n of nodes) {
         const nd = d.nodes[n.nodeID];
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!nd) {
             continue;
         }
@@ -220,10 +222,12 @@ function buildDefaultState(
     maybeDesign: Design | undefined,
     options: Options
 ): ModelView {
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     const design = maybeDesign ? maybeDesign : createDefaultDesign(graph.getNodes());
     if (maybeDesign) {
         // Make sure we have all needed nodes in the design
         graph.getNodes().forEach(n => {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!design.nodes[n.nodeID]) {
                 design.nodes[n.nodeID] = createDefaultNodeDesign(n);
             }
@@ -231,6 +235,7 @@ function buildDefaultState(
 
         // Make sure we have all needed connections in the design
         graph.getConnections().forEach(c => {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!design.connections[c.id]) {
                 design.connections[c.id] = createDefaultConnectionDesign(c);
             }
@@ -248,8 +253,8 @@ function buildDefaultState(
             records: [],
             pointer: 0
         },
-        pan: maybeDesign ? maybeDesign.pan : options.design.defaultPan || getPerfectPan(graph, design),
-        scale: maybeDesign ? maybeDesign.scale : options.design.defaultScale || 1.0,
+        pan: maybeDesign ? maybeDesign.pan : options.design.defaultPan ?? getPerfectPan(graph, design),
+        scale: maybeDesign ? maybeDesign.scale : options.design.defaultScale ?? 1.0,
         editingConnection: undefined,
         inspectMode: false
     };
@@ -434,6 +439,7 @@ function buildActionsState(
 
     function lookAtNode(id: string): boolean {
         const node = viewState.nodes[id];
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!node) {
             return false;
         }
@@ -550,24 +556,28 @@ function buildActionsState(
         }
         action.ids.forEach(id => {
             viewState.graph.removeNode(id, false);
+                                          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete viewState.design.nodes[id];
 
+                                   // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete viewState.nodes[id];
             if (viewState.nodeHighlight === id) {
                 viewState.nodeHighlight = undefined;
             }
         });
         const linkedConnections = findConnections(c =>
-            action.ids.indexOf(c.connection.source.node) >= 0 ||
-            action.ids.indexOf(c.connection.destination.node) >= 0);
+            action.ids.includes(c.connection.source.node) ||
+            action.ids.includes(c.connection.destination.node));
         linkedConnections.forEach(c => {
             viewState.graph.removeConnection(c.connection.id);
+                                                // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete viewState.design.connections[c.connection.id];
+                                         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete viewState.connections[c.connection.id];
         });
-        viewState.nodesOrder = viewState.nodesOrder.filter(n => action.ids.indexOf(n) < 0);
-        viewState.nodesSelected = viewState.nodesSelected.filter(n => action.ids.indexOf(n) < 0);
-        Object.values(viewState.nodes).forEach(n => revalidateNode(n.node.nodeID, false));
+        viewState.nodesOrder = viewState.nodesOrder.filter(n => !action.ids.includes(n));
+        viewState.nodesSelected = viewState.nodesSelected.filter(n => !action.ids.includes(n));
+        Object.values(viewState.nodes).forEach(n => { revalidateNode(n.node.nodeID, false); });
         return {
             success: true,
             redraw: true
@@ -595,7 +605,7 @@ function buildActionsState(
             viewState.graph.addNode(n.node);
             viewState.design.nodes[nid] = nodeState.design;
         });
-        Object.values(viewState.nodes).forEach(n => revalidateNode(n.node.nodeID, false));
+        Object.values(viewState.nodes).forEach(n => { revalidateNode(n.node.nodeID, false); });
         return {
             success: true,
             redraw: true
@@ -605,7 +615,7 @@ function buildActionsState(
     function doSelectNodes(action: SelectNodes) {
         const { ids, deselectSelection, keepOrder } = action;
         const res = {
-            nodesOrder: keepOrder ? viewState.nodesOrder : viewState.nodesOrder.filter(no => ids.indexOf(no) < 0),
+            nodesOrder: keepOrder ? viewState.nodesOrder : viewState.nodesOrder.filter(no => !ids.includes(no)),
             nodes: {
                 ...viewState.nodes
             }
@@ -625,6 +635,7 @@ function buildActionsState(
         }
         ids.forEach(i => {
             const n = res.nodes[i];
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!n) {
                 console.warn(`Trying to select node ${i} which doesn't exist.`);
                 return;
@@ -642,6 +653,7 @@ function buildActionsState(
             };
         });
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (modified || !keepOrder) {
             const selected = (deselectSelection ? [] : viewState.nodesSelected.slice()).concat(ids);
             viewState.nodesOrder = res.nodesOrder;
@@ -661,6 +673,7 @@ function buildActionsState(
         const { nodes } = action;
         for (const node of nodes) {
             const nodeState = viewState.nodes[node.id];
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!nodeState) {
                 throw new Error(`Trying to move node ${node.id} which doesn't exist.`);
             }
@@ -688,7 +701,7 @@ function buildActionsState(
             id
         } = action;
 
-        const checkNodes: {[key: string]: boolean} = {};
+        const checkNodes: Record<string, boolean> = {};
         const conn = viewState.connections[id];
         if (typeof source !== 'undefined') {
             checkNodes[conn.connection.source.node] = true;
@@ -708,7 +721,7 @@ function buildActionsState(
         };
         viewState.connections[id] = entry;
 
-        Object.keys(checkNodes).forEach(cn => revalidateNode(cn, false));
+        Object.keys(checkNodes).forEach(cn => { revalidateNode(cn, false); });
         revalidateConnection(entry.connection.id, false);
 
         return {
@@ -724,18 +737,20 @@ function buildActionsState(
             };
         }
 
-        const checkNodes: {[key: string]: boolean} = {};
+        const checkNodes: Record<string, boolean> = {};
         action.ids.forEach(c => {
             viewState.graph.removeConnection(c);
+                                                // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete viewState.design.connections[c];
 
             const conn = viewState.connections[c];
             checkNodes[conn.connection.source.node] = true;
             checkNodes[conn.connection.destination.node] = true;
+                                         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete viewState.connections[c];
         });
 
-        Object.keys(checkNodes).forEach(cn => revalidateNode(cn, false));
+        Object.keys(checkNodes).forEach(cn => { revalidateNode(cn, false); });
         
         return {
             success: true,
@@ -761,6 +776,7 @@ function buildActionsState(
                 break;
 
             default:
+                // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
                 throw new Error('Unexpected connection type: ' + connectionType);
         }
 
@@ -793,6 +809,7 @@ function buildActionsState(
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     function doAction<D>(action: ActionType): D | undefined {
         const history = viewState.history;
         const recs = history.records;
@@ -804,9 +821,11 @@ function buildActionsState(
         if (recs.length > 0) {
             const last = recs[recs.length - 1];
             let compressed: ActionType | undefined;
-            if (last && last.action && last.action.type === action.type) {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (last?.action?.type === action.type) {
                 const compress = compressor(action);
                 if (compress) {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     compressed = compress(last.action, action);
                 }
             }
@@ -923,17 +942,17 @@ function buildActionsState(
             type: 'CreateNodes',
             nodes: [{
                 node,
-                pos: pos || {x: 0, y: 0}
+                pos: pos ?? {x: 0, y: 0}
             }]
         });
     }
 
-    function createNodes(nodes: Array<{node: Node, pos?: Coords}>) {
+    function createNodes(nodes: {node: Node, pos?: Coords}[]) {
         return doAction({
             type: 'CreateNodes',
             nodes: nodes.map(n => ({
                 node: n.node,
-                pos: n.pos || {x: 0, y: 0}
+                pos: n.pos ?? {x: 0, y: 0}
             }))
         });
     }
@@ -949,7 +968,7 @@ function buildActionsState(
         return moveNodes([{id, pos}]);
     }
 
-    function moveNodes(nodes: Array<{id: string, pos: Coords}>) {
+    function moveNodes(nodes: {id: string, pos: Coords}[]) {
         return doAction({
             type: 'MoveNodes',
             nodes
@@ -960,7 +979,7 @@ function buildActionsState(
         return shiftNodes([{id, shift}]);
     }
     
-    function shiftNodes(nodes: Array<{id: string, shift: Partial<Coords>}>) {
+    function shiftNodes(nodes: {id: string, shift: Partial<Coords>}[]) {
         const moves = nodes
             .filter(n => typeof n.shift.x !== 'undefined' || typeof n.shift.y !== 'undefined')
             .filter(n => typeof viewState.nodes[n.id] !== 'undefined')
@@ -988,7 +1007,8 @@ function buildActionsState(
             connectionType: type
         });
         
-        return res as string;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return res!;
     }
 
     function updateConnection(id: string, from?: Port, to?: Port, disabled?: boolean) {
@@ -1017,6 +1037,7 @@ function buildActionsState(
         if (!nodePorts) {
             throw new Error(`Unexpected port ${port.port} for node ${port.node}. Not found.`);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const isFlow = nodePorts && (nodePorts.flowIn || nodePorts.flowOut) ? true : false;
         const isOut = isFlow ? (nodePorts.flowOut ? true : false) : (nodePorts.valueOut ? true : false);
 
@@ -1163,6 +1184,7 @@ function buildActionsState(
             if (
                 !node.node.getFlowInputUnsafe(c.connection.destination.port) &&
                 !node.node.getValueInputUnsafe(c.connection.destination.port)) {
+                                             // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
                 delete viewState.connections[c.connection.id];
                 viewState.graph.removeConnection(c.connection.id);
             }
@@ -1171,6 +1193,7 @@ function buildActionsState(
             if (
                 !node.node.getFlowOutputUnsafe(c.connection.source.port) &&
                 !node.node.getValueOutputUnsafe(c.connection.source.port)) {
+                                             // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
                 delete viewState.connections[c.connection.id];
                 viewState.graph.removeConnection(c.connection.id);
             }
@@ -1181,11 +1204,13 @@ function buildActionsState(
         viewState.history.nodeEdit = undefined;
     }
 
-    function revalidateNode(node: string, commitRedraw: boolean = true) {
+    function revalidateNode(node: string, commitRedraw = true) {
         const n = viewState.nodes[node];
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!n) {
             throw new Error(`revalidateNode can't find node: ${node}`);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const invalid = n.node.validate ? n.node.validate(viewState.graph) : undefined;
         if (n.invalid !== invalid) {
             n.invalid = invalid;
@@ -1193,8 +1218,9 @@ function buildActionsState(
         }
     }
 
-    function revalidateConnection(id: string, commitRedraw: boolean = true) {
+    function revalidateConnection(id: string, commitRedraw = true) {
         const c = viewState.connections[id];
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!c) {
             throw new Error(`revalidateConnection can't find connection: ${id}`);
         }
@@ -1255,8 +1281,8 @@ function buildActionsState(
         const isFromValue = from.valueIn || from.valueOut ? true : false;
         const isToValue = to.valueIn || to.valueOut ? true : false;
         if (isFromFlow && isToFlow) {
-            const flowOut = from.flowOut || to.flowOut;
-            const flowIn = from.flowIn || to.flowIn;
+            const flowOut = from.flowOut ?? to.flowOut;
+            const flowIn = from.flowIn ?? to.flowIn;
             // Must be a reverse in / out, otherwise invalid
             if (!flowOut || !flowIn) {
                 return false;
@@ -1267,8 +1293,8 @@ function buildActionsState(
             return true;
         } else
         if (isFromValue && isToValue) {
-            const valueOut = from.valueOut || to.valueOut;
-            const valueIn = from.valueIn || to.valueIn;
+            const valueOut = from.valueOut ?? to.valueOut;
+            const valueIn = from.valueIn ?? to.valueIn;
             // Must be a reverse in / out, otherwise invalid
             if (!valueOut || !valueIn) {
                 return false;
@@ -1279,7 +1305,7 @@ function buildActionsState(
         return false;
     }
 
-    function redrawNode(node: Node | string, commitRedraw: boolean = true) {
+    function redrawNode(node: Node | string, commitRedraw = true) {
         const nodeID = typeof node === 'string' ? node : node.nodeID;
         const n = viewState.nodes[nodeID];
         viewState.nodes[nodeID] = {
@@ -1293,7 +1319,7 @@ function buildActionsState(
         }
     }
 
-    function redrawConnection(connection: Connection | string, commitRedraw: boolean = true) {
+    function redrawConnection(connection: Connection | string, commitRedraw = true) {
         const id = typeof connection === 'string' ? connection : connection.id;
         const c = viewState.connections[id];
         viewState.connections[id] = {
@@ -1420,7 +1446,7 @@ export function useModel(
 ): [ModelView, ModelActions] {
     const [, setUpdateTime] = useState(Date.now);
     const redraw = useMemo(() => {
-        return () => setUpdateTime(Date.now);
+        return () => { setUpdateTime(Date.now); };
     }, [setUpdateTime]);
 
     function buildState(): [ModelView, ModelActions] {

@@ -14,7 +14,7 @@ export class BrowserAlert extends Node<BrowserAlertExecutor> {
         }
     }
 
-    constructor(message: string = '') {
+    constructor(message = '') {
         super();
 
         this.message = new Text(message);

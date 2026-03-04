@@ -6,6 +6,7 @@ import { type IconName } from '../Icons';
 import { Icon } from '../Icon';
 
 export interface ButtonProps extends BaseProps {
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     icon?: IconName | React.ReactNode;
     active?: boolean;
     fill?: boolean;
@@ -53,7 +54,7 @@ export function Button(props: React.PropsWithChildren<ButtonProps>) {
                 <Icon icon={icon} />
             }
             {
-                (text || children) &&
+                (text ?? children) &&
                 <span key="text" className={theme.classes.buttonText}>
                     {children}
                 </span>

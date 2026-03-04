@@ -23,6 +23,7 @@ export const NodeEdit = React.memo((props: NodeEditProps) => {
 
     const Drawer = useMemo(() => {
         const NativeDrawer = options.drawers.nodes[node.defn.class];
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return NativeDrawer || NodeDrawer;
     }, [node.defn.class, options]);
 

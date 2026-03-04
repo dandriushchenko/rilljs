@@ -17,6 +17,7 @@ export interface SelectProps<I> {
     items: I[];
     defaultSelected?: I;
     itemPredicate?: (item: I, filter: string) => boolean;
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     itemRenderer?: React.FunctionComponent<SelectItemRendererProps<I>> | React.ClassicComponentClass<SelectItemRendererProps<I>>;
     onSelect?: (item: I) => void;
 
@@ -29,7 +30,7 @@ function defaultItemRenderer<I>(props: SelectItemRendererProps<I>) {
             onClick={props.onClick}
         >
             {
-                `${props.item}`
+                String(props.item)
             }
         </span>
     );
@@ -50,6 +51,7 @@ export function Select<I>(props: SelectProps<I>) {
     const [filter, setFilter] = useState('');
     const [activeItem, setActiveItem] = useState(() => defaultSelected ? items.findIndex(i => i === defaultSelected) : -1);
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     function onFilterChange(event: React.FormEvent<HTMLInputElement>) {
         setFilter(event.currentTarget.value);
         setActiveItem(0);
@@ -66,6 +68,7 @@ export function Select<I>(props: SelectProps<I>) {
     }
 
     function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         if (event.which === Keys.Up) {
             if (activeItem > 0) {
                 setActiveItem(activeItem - 1);
@@ -73,6 +76,7 @@ export function Select<I>(props: SelectProps<I>) {
                 setActiveItem(filtered.length - 1);
             }
         } else
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         if (event.which === Keys.Down) {
             if (activeItem < filtered.length - 1) {
                 setActiveItem(activeItem + 1);
@@ -80,6 +84,7 @@ export function Select<I>(props: SelectProps<I>) {
                 setActiveItem(0);
             }
         } else
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         if (event.which === Keys.Enter) {
             const validActiveItem = activeItem >= filtered.length ? 0 : activeItem;
             const item = filtered[validActiveItem];
@@ -143,7 +148,7 @@ export function Select<I>(props: SelectProps<I>) {
                         }
                     </Menu>
                 :
-                    placeholder ||
+                    placeholder ??
                     <span className={theme.textMuted}>
                         Nothing
                     </span>

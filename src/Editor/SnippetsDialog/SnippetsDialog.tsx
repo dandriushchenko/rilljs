@@ -71,7 +71,7 @@ export const SnippetsDialog = React.memo((props: SnippetsDialogProps) => {
     function snippetPredicate(snippet: Snippet, filter: string): boolean {
         const fl = filter.toLowerCase();
         const nl = (snippet.name + ' ' + snippet.description).toLowerCase();
-        return nl.indexOf(fl) >= 0;
+        return nl.includes(fl);
     }
 
     function toggleReplace() {

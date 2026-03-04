@@ -50,9 +50,10 @@ export function ControlsPanel(props: React.PropsWithChildren<ControlsPanelProps>
             // Paste from the buffer
             const text = await pasteFromClipboard();
             try {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 pasteModelJSON(JSON.parse(text), actions, registry);
             } catch (e) {
-                console.warn(`Can't paste from clipboard: ${e}`, text, e);
+                console.warn(`Can't paste from clipboard: ${String(e)}`, text, e);
             }
         }
 
@@ -86,6 +87,7 @@ export function ControlsPanel(props: React.PropsWithChildren<ControlsPanelProps>
                     key="paste"
                     icon="clipboard"
                     title="Paste"
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
                     onClick={onPaste}
                 />
             );

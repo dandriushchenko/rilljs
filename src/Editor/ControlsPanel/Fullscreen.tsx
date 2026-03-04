@@ -13,12 +13,16 @@ export const FullScreen = React.memo((props: FullScreenProps) => {
     const [maximized, setMaximized] = useState(false);
     function onClick() {
         if (document.fullscreenElement) {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (document.exitFullscreen) {
+                // eslint-disable-next-line @typescript-eslint/no-floating-promises
                 document.exitFullscreen();
                 setMaximized(false);
             }
         } else {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (editorElement.requestFullscreen) {
+                // eslint-disable-next-line @typescript-eslint/no-floating-promises
                 editorElement.requestFullscreen();
                 setMaximized(true);
             }

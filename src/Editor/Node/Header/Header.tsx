@@ -37,10 +37,10 @@ export function Header(props: NodeHeaderProps) {
     const headerTheme = theme.canvas.node.header;
     const [mouseDownPos, setMouseDownPos] = useState<Coords | undefined>();
     const [, setMousePos] = useState<Coords | undefined>();
-    const [dragStartNodes, setDragStartNodes] = useState<Array<{id: string, pos: Coords}>>([]);
+    const [dragStartNodes, setDragStartNodes] = useState<{id: string, pos: Coords}[]>([]);
 
-    const title = node.nodeName || node.defn.name || Unnamed;
-    const color = design.color || (node.designDefn && node.designDefn.color);
+    const title = node.nodeName ?? node.defn.name ?? Unnamed;
+    const color = design.color ?? (node.designDefn?.color);
 
     useEffect(() => {
         if (!mouseDownPos) {
@@ -114,7 +114,7 @@ export function Header(props: NodeHeaderProps) {
         theme
     ]);
 
-    function onMouseDown(event: React.MouseEvent<Element>) {
+    function onMouseDown(event: React.MouseEvent) {
         if (!draggable) {
             return;
         }
@@ -122,7 +122,7 @@ export function Header(props: NodeHeaderProps) {
         const isShiftPressed = event.shiftKey;
 
         const currentState = actions.findNode(node.nodeID);
-        const alreadySelected = currentState && currentState.selected;
+        const alreadySelected = currentState?.selected;
         const dragAll = alreadySelected;
         if (!alreadySelected) {
             actions.selectNodes(node.nodeID, !isShiftPressed, false);
@@ -131,7 +131,7 @@ export function Header(props: NodeHeaderProps) {
 
         const dragStartNodesList = actions
             .findNodes(n =>
-                (dragAll && n.selected) || n.node.nodeID === node.nodeID
+                (dragAll && n.selected) ?? n.node.nodeID === node.nodeID
             )
             .map(n => ({
                 id: n.node.nodeID,

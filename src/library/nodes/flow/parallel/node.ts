@@ -22,13 +22,14 @@ export class Parallel extends Node<ParallelExecutor> {
         }
     }
 
-    constructor(branches: number = 1) {
+    constructor(branches = 1) {
         super();
 
         this.onBranchesChange = this.onBranchesChange.bind(this);
         this.branchesValue = new RNumber(branches);
         this.addValueInternal('branches', this.branchesValue, {
             name: 'Branches Out',
+            // eslint-disable-next-line @typescript-eslint/unbound-method
             onChange: this.onBranchesChange,
             sanitize: numberSanitizer({
                 min: 0,
@@ -42,7 +43,7 @@ export class Parallel extends Node<ParallelExecutor> {
     }
 
     public getOutputName(index: number): string {
-        return `out_${index + 1}`;
+        return `out_${String(index + 1)}`;
     }
 
     protected updateOutputs(num: number) {
@@ -53,7 +54,7 @@ export class Parallel extends Node<ParallelExecutor> {
         }
         // Add new ones
         for (let i = this.flowOut.length; i < num; i++) {
-            this.addFlowOutput(this.getOutputName(i), `${i + 1}`);
+            this.addFlowOutput(this.getOutputName(i), String(i + 1));
         }
     }
 

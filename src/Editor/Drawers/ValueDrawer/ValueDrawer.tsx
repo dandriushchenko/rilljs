@@ -8,8 +8,9 @@ import { type Options } from '../../options';
 import { type Theme } from '../../theme';
 import { type ValueDrawerProps } from '../props';
 
-// eslint-disable-next-line react-refresh/only-export-components
-export function drawDatum<DT, T extends Datum<DT>>(
+ 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+function drawDatum<DT, T extends Datum<DT>>(
     v: T,
     vid: string | number,
     onValueChange: (value: DT) => void,
@@ -19,6 +20,7 @@ export function drawDatum<DT, T extends Datum<DT>>(
     theme: Theme
 ) {
     const DataDrawer = options.drawers.data[v.defn.id];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!DataDrawer) {
         if (options.debug) {
             return (
@@ -35,8 +37,9 @@ export function drawDatum<DT, T extends Datum<DT>>(
     return (
         <DataDrawer
             key={vid}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            value={v as any}
+             
+             
+            value={v as never}
             node={node}
             actions={actions}
             options={options}
@@ -64,7 +67,7 @@ export function ValueDrawer<DT, T extends Datum<DT>>(props: ValueDrawerProps<DT,
         help
     } = useControlGroupLabels(value);
 
-    const changeHandler = handleDatumValueChange<DT, T>(value, actions, node, () => redraw({}));
+    const changeHandler = handleDatumValueChange<DT, T>(value, actions, node, () => { redraw({}); });
 
     return (
         <ControlGroup

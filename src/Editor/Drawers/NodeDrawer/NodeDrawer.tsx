@@ -13,6 +13,7 @@ export function NodeDrawer(props: React.PropsWithChildren<NodeDrawerProps>) {
   const classes = theme.classes;
   const design = node.designDefn;
 
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   function onNodeNameChange(event: React.FormEvent<HTMLInputElement>) {
     const value = event.currentTarget.value;
     if (node.nodeName === value) {
@@ -77,10 +78,10 @@ export function NodeDrawer(props: React.PropsWithChildren<NodeDrawerProps>) {
       <div
         className={classes.node.header}
         style={
-          design && design.color ? { backgroundColor: design.color } : undefined
+          design?.color ? { backgroundColor: design.color } : undefined
         }
       >
-        <span>{node.nodeName || node.defn.name || node.defn.class}</span>
+        <span>{node.nodeName ?? node.defn.name ?? node.defn.class}</span>
       </div>
       <div className={classes.node.content}>
         {invalid && invalid !== '' && (
@@ -88,7 +89,7 @@ export function NodeDrawer(props: React.PropsWithChildren<NodeDrawerProps>) {
         )}
         <ControlGroup label='Node Name'>
           <InputField
-            value={node.nodeName || ''}
+            value={node.nodeName ?? ''}
             onChange={onNodeNameChange}
             disabled={readonly}
           />

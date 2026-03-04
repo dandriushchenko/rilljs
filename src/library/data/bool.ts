@@ -16,7 +16,7 @@ export class Bool extends Datum<boolean> {
         return Bool;
     }
 
-    constructor(value: boolean = false) {
+    constructor(value = false) {
         super(value);
     }
 

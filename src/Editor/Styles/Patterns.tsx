@@ -8,11 +8,11 @@ export const Patterns = React.memo(() => {
     return (
         <>
             <pattern id="smallGrid" width={theme.step} height={theme.step} patternUnits="userSpaceOnUse">
-                <path d={`M ${theme.step} 0 L 0 0 0 ${theme.step}`} className={theme.small}/>
+                <path d={`M ${String(theme.step)} 0 L 0 0 0 ${String(theme.step)}`} className={theme.small}/>
             </pattern>
             <pattern id="grid" width={largeStep} height={largeStep} patternUnits="userSpaceOnUse">
                 <rect width={largeStep} height={largeStep} fill="url(#smallGrid)"/>
-                <path d={`M ${largeStep} 0 L 0 0 0 100`} className={theme.large}/>
+                <path d={`M ${String(largeStep)} 0 L 0 0 0 100`} className={theme.large}/>
             </pattern>
         </>
     ); 

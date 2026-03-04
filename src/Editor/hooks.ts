@@ -57,6 +57,7 @@ export function useResizeObservable<E extends Element = Element>(ref: React.RefO
             return;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!ResizeObserver) {
             const newDims = getClientDims(ref);
             if (!newDims) {

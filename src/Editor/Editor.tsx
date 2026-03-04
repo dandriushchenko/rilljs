@@ -64,7 +64,7 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
     } = options;
 
     const hooks = useMemo(() => {
-        return originalHooks || {};
+        return originalHooks ?? {};
     }, [originalHooks]);
 
     const ref = useRef<HTMLDivElement>(null);
@@ -96,13 +96,14 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
 
             const onSelect = (nodeClass: string) => {
                 const node = opts.registry.create(nodeClass);
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 if (!node) {
                     onCancel();
                     return;
                 }
 
                 const pan = actions.getPan();
-                const pos = coords || {
+                const pos = coords ?? {
                     x: -pan.x + dimensions.width / 2,
                     y: -pan.y + dimensions.height / 2
                 };
@@ -182,6 +183,7 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
 
                     const onSelect = (nodeClass: string) => {
                         const node = options.registry.create(nodeClass);
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         if (!node) {
                             onCancel();
                             return;
@@ -266,11 +268,12 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
         };
     });
 
-    const editingConnection = modelView.editingConnection && modelView.editingConnection.reference ?
+    const editingConnection = modelView.editingConnection?.reference ?
         modelView.connections[modelView.editingConnection.reference] : undefined;
 
     function renderNode(node: ModelNodeState | string, skipHighlight: boolean) {
         const n = typeof node === 'string' ? modelView.nodes[node] : node;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!n) {
             return null;
         }
@@ -291,8 +294,7 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
     }
 
     function renderConnection(c: ModelConnectionState, skipHighlight: boolean) {
-        if (modelView.editingConnection &&
-            modelView.editingConnection.reference === c.connection.id) {
+        if (modelView.editingConnection?.reference === c.connection.id) {
             return null;
         }
 
@@ -304,6 +306,7 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
 
         const from = modelView.nodes[c.connection.source.node];
         const to = modelView.nodes[c.connection.destination.node];
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!from || !to) {
             console.warn(`Inconsistent state, connection ${JSON.stringify(c)} is not valid.`);
             return null;

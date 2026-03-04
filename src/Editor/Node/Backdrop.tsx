@@ -5,7 +5,7 @@ import { type Theme, ThemeContext } from '../theme';
 export interface BackdropProps {
     width: number;
     height: number;
-    onMouseDown?: (event: React.MouseEvent<Element>) => void;
+    onMouseDown?: (event: React.MouseEvent) => void;
 }
 
 export function Backdrop(props: BackdropProps) {

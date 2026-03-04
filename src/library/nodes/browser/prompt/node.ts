@@ -21,7 +21,7 @@ export class BrowserPrompt extends Node<BrowserPromptExecutor> {
         };
     }
 
-    constructor(message: string = '', defaultResult: string = '') {
+    constructor(message = '', defaultResult = '') {
         super();
 
         this.message = new Text(message);

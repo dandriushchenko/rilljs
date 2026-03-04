@@ -36,7 +36,7 @@ export function NodeSelect(props: NodeSelectProps) {
                 onClick={itemProps.onClick}
             >
                 <span
-                    style={design && design.color ? {color: design.color} : undefined}
+                    style={design?.color ? {color: design.color} : undefined}
                 >
                     {defn.name}
                 </span>
@@ -49,8 +49,9 @@ export function NodeSelect(props: NodeSelectProps) {
 
     function nodePredicate(node: Node, filter: string): boolean {
         const fl = filter.toLowerCase();
+        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
         const nl = (node.defn.class + ' ' + node.defn.name + ' ' + node.defn.description).toLowerCase();
-        return nl.indexOf(fl) >= 0;
+        return nl.includes(fl);
     }
 
     return (

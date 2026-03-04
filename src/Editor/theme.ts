@@ -49,12 +49,12 @@ export interface GradientFilter {
     y1: number;
     x2: number;
     y2: number;
-    stops: Array<{offset: number, stopColor: string}>;
+    stops: {offset: number, stopColor: string}[];
 }
 
 export interface FiltersTheme {
-    shadows: {[key: string]: ShadowFilter};
-    gradients: {[key: string]: GradientFilter};
+    shadows: Record<string, ShadowFilter>;
+    gradients: Record<string, GradientFilter>;
 }
 
 export interface ThemeClasses {

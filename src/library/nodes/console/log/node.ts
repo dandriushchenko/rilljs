@@ -29,7 +29,7 @@ export class ConsoleLog extends Node<ConsoleLogExecutor> {
         };
     }
 
-    constructor(message: string = '') {
+    constructor(message = '') {
         super();
 
         this.messageValue = new Text(message);
