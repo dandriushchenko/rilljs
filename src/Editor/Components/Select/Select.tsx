@@ -49,10 +49,10 @@ export function Select<I>(props: SelectProps<I>) {
     const menuRef = useRef<HTMLUListElement>(null);
     const [filter, setFilter] = useState('');
     const [activeItem, setActiveItem] = useState(() => defaultSelected ? items.findIndex(i => i === defaultSelected) : -1);
-    const [filtered, setFiltered] = useState(items);
 
     function onFilterChange(event: React.FormEvent<HTMLInputElement>) {
         setFilter(event.currentTarget.value);
+        setActiveItem(0);
     }
 
     function handleClick(item: I) {
@@ -81,23 +81,15 @@ export function Select<I>(props: SelectProps<I>) {
             }
         } else
         if (event.which === Keys.Enter) {
-            const item = filtered[activeItem];
+            const validActiveItem = activeItem >= filtered.length ? 0 : activeItem;
+            const item = filtered[validActiveItem];
             if (item && onSelect) {
                 onSelect(item);
             }
         }
     }
 
-    useEffect(() => {
-        const res = !itemPredicate ?
-            items :
-            items.filter(i => itemPredicate(i, filter));
-
-        setFiltered(res);
-        if (activeItem >= res.length) {
-            setActiveItem(0);
-        }
-    }, [items, itemPredicate, filter, activeItem]);
+    const filtered = !itemPredicate ? items : items.filter(i => itemPredicate(i, filter));
 
     useEffect(() => {
         scrollIntoView(menuRef.current, activeItem);

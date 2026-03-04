@@ -4,6 +4,7 @@ import { type Theme, ThemeContext } from '../theme';
 import { ZoomIn } from './ZoomIn';
 import { ResetZoom } from './ResetZoom';
 import { ZoomOut } from './ZoomOut';
+import { copyToClipboard, pasteFromClipboard } from './clipboard';
 import { Divider, mergeClasses, Button } from '../Components';
 import { FullScreen } from './Fullscreen';
 import { CreateNew } from './CreateNew';
@@ -27,30 +28,6 @@ export interface ControlsPanelProps {
     readonly?: boolean;
 }
 
-export function copyToClipboard(text: string) {
-    // const selection = document.getSelection();
-    // const range = selection ? selection.getRangeAt(0) : undefined;
-    navigator.clipboard.writeText(text);
-
-    // const tempInput = document.createElement("input");
-    // tempInput.type = "text";
-    // tempInput.value = text;
-
-    // document.body.appendChild(tempInput);
-    // tempInput.select();
-    // document.execCommand("Copy");
-    // document.body.removeChild(tempInput);
-
-    // if (range && selection) {
-    //     selection.removeAllRanges();
-    //     selection.addRange(range);
-    // }
-}
-
-export async function pasteFromClipboard(): Promise<string> {
-    const text = await navigator.clipboard.readText();
-    return text;
-}
 
 export function ControlsPanel(props: React.PropsWithChildren<ControlsPanelProps>) {
     const {

@@ -4,8 +4,7 @@ import { Switch } from '../../../Components';
 import { type Bool } from '../../../../library';
 import { type DataDrawerProps } from '../../props';
 
-export interface BoolDataDrawerProps extends DataDrawerProps<boolean, Bool> {
-}
+export type BoolDataDrawerProps = DataDrawerProps<boolean, Bool>;
 
 export function BoolDataDrawer(props: BoolDataDrawerProps) {
     const {

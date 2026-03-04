@@ -1,14 +1,14 @@
 
-export function mergeDeep(target: any, source: any, clone?: boolean) {
-    const isObject = (obj: unknown) => obj && typeof obj === 'object';
+export function mergeDeep(target: unknown, source: unknown, clone?: boolean): unknown {
+    const isObject = (obj: unknown): obj is Record<string, unknown> => typeof obj === 'object' && obj !== null;
   
     if (!isObject(target) || !isObject(source)) {
-      return target || source;
+      return source;
     }
 
     const res = clone ? JSON.parse(JSON.stringify(target)) : target;
     Object.keys(source).forEach(key => {
-      const targetValue = res[key];
+      const targetValue = target[key];
       const sourceValue = source[key];
   
       if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {

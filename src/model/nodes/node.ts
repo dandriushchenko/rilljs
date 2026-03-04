@@ -74,7 +74,8 @@ export abstract class Node<E extends Executor = Executor> implements INode<E> {
 
     abstract executor(): E;
 
-    validate(_graph: Graph): string | undefined {
+    validate(graph: Graph): string | undefined {
+        void graph;
         return undefined;
     }
 

@@ -7,7 +7,7 @@ export * from './bool';
 export * from './number';
 export * from './text';
 
-export const BuiltinDataTypes: DatumConstructor<any>[] = [
+export const BuiltinDataTypes: Array<DatumConstructor<boolean> | DatumConstructor<string> | DatumConstructor<number>> = [
     Bool,
     Text,
     RNumber

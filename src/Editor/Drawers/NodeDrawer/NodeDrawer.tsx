@@ -20,7 +20,7 @@ export function NodeDrawer(props: React.PropsWithChildren<NodeDrawerProps>) {
     }
 
     actions.beginNodeEdit(node);
-    node.nodeName = value && value !== '' ? value : undefined;
+    Object.assign(node, { nodeName: value && value !== '' ? value : undefined });
     actions.finishNodeEdit();
     redraw({});
   }

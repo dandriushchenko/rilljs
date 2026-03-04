@@ -32,7 +32,7 @@ export const numberConverter: ConverterFrom<number, boolean | string> & Converte
                 return from ? 1 : 0;
             }
 
-            case TextTypeID:
+            case TextTypeID: {
                 if (typeof from !== 'string') {
                     throw new ConverterRuntimeConvertFromFailure(NumberTypeID, typeID, `Expected string got ${typeof from}`);
                 }
@@ -42,6 +42,7 @@ export const numberConverter: ConverterFrom<number, boolean | string> & Converte
                     throw new ConverterRuntimeConvertFromFailure(NumberTypeID, typeID, `Unexpected number in value '${from}'`);
                 }
                 return asNumber;                
+            }
 
             
             default:

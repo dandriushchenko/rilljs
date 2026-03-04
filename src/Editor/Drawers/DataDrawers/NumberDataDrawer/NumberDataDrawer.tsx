@@ -4,8 +4,7 @@ import { InputField } from '../../../Components';
 import { type RNumber } from '../../../../library';
 import { type DataDrawerProps } from '../../props';
 
-export interface NumberDataDrawerProps extends DataDrawerProps<number, RNumber> {
-}
+export type NumberDataDrawerProps = DataDrawerProps<number, RNumber>;
 
 export function NumberDataDrawer(props: NumberDataDrawerProps) {
     const {

@@ -4,8 +4,7 @@ import { InputField } from '../../../Components';
 import { type Text } from '../../../../library';
 import { type DataDrawerProps } from '../../props';
 
-export interface TextDataDrawerProps extends DataDrawerProps<string, Text> {
-}
+export type TextDataDrawerProps = DataDrawerProps<string, Text>;
 
 export function TextDataDrawer(props: TextDataDrawerProps) {
     const {

@@ -1,8 +1,6 @@
 import React from 'react';
 
-export const IconsNames = {
-    Arrow: 'rill-icon-arrow'
-};
+import { IconsNames } from './IconsNames';
 
 export const Icons = React.memo(() => {
     return (

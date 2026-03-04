@@ -5,3 +5,4 @@ export * from './ZoomIn';
 export * from './ZoomOut';
 export * from './InsertSnippet';
 export * from './CreateNew';
+export * from './clipboard';

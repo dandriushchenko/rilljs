@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom';
 
 import {type Theme, ThemeContext} from '../../theme';
 
-export function Portal(props: React.PropsWithChildren<{}>): React.ReactPortal {
+export type PortalProps = Record<string, never>;
+export function Portal(props: React.PropsWithChildren<PortalProps>): React.ReactPortal | null {
 
     const theme = useContext<Theme>(ThemeContext).classes;
     const [containerEl] = useState(() => document.createElement("div"));
@@ -17,7 +18,7 @@ export function Portal(props: React.PropsWithChildren<{}>): React.ReactPortal {
     }, [containerEl]);
 
     useEffect(() => {
-        containerEl.className = theme.portal;
+        containerEl.setAttribute('class', theme.portal || '');
     }, [containerEl, theme]);
 
     return ReactDOM.createPortal(props.children, containerEl);

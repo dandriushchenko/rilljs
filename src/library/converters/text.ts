@@ -45,16 +45,18 @@ export const textConverter: ConverterFrom<string, boolean | number> & ConverterT
 
     convertTo: (value: string, typeID: string): boolean | number => {
         switch (typeID) {
-            case BoolTypeID:
+            case BoolTypeID: {
                 const vl = value.toLowerCase();
                 return vl === 'true' || vl === '1' ? true : false;
+            }
 
-            case NumberTypeID:
+            case NumberTypeID: {
                 const asNumber = parseFloat(value);
                 if (isNaN(asNumber)) {
                     throw new ConverterRuntimeConvertToFailure(TextTypeID, typeID, `Unexpected number in value '${value}'`);
                 }
                 return asNumber;
+            }
 
             default:
                     throw new ConverterRuntimeConvertToFailure(TextTypeID, typeID, `Unsupported type id`);                

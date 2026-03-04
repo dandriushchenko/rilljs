@@ -33,7 +33,8 @@ export function createDefaultNodeDesign(n: Node): NodeDesign {
     };
 }
 
-export function createDefaultConnectionDesign(_c?: Connection): ConnectionDesign {
+export function createDefaultConnectionDesign(c?: Connection): ConnectionDesign {
+    void c;
     return {};
 }
 

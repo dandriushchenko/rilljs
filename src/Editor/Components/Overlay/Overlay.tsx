@@ -49,13 +49,13 @@ export const Overlay = React.memo((props: React.PropsWithChildren<OverlayProps>)
   const containerRef = useRef<HTMLDivElement>(null);
   const [wasEverOpened, setWasEverOpened] = useState(false);
 
+  if (isOpen && !wasEverOpened) {
+      setWasEverOpened(true);
+  }
+
   useEffect(() => {
     if (!isOpen) {
       return;
-    }
-
-    if (!wasEverOpened) {
-      setWasEverOpened(true);
     }
 
     if (autoFocus) {

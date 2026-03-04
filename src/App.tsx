@@ -38,7 +38,7 @@ export function App() {
             }}
         >
 
-            <RillEditor graph={graph} options={{design: {snippets}} as any}/>
+            <RillEditor graph={graph} options={{design: {snippets}} as never}/>
         </div>
     );
 }

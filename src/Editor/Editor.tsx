@@ -71,6 +71,11 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
     const svgRef = useRef<SVGSVGElement>(null);
     const dims = useResizeObservable(ref);
 
+    const [editorElement, setEditorElement] = useState<HTMLDivElement | null>(null);
+    useEffect(() => {
+        setEditorElement(ref.current);
+    }, []);
+
     const [mousePos, setMousePos] = useState<Coords>({x: 0, y: 0});
     const [snippetDialogOpen, setSnippetDialogOpen] = useState(false);
     // This set of states must be reset upon change of a graph
@@ -247,10 +252,11 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
 
         modelActions.updateConnectionEditTarget(undefined, mousePos);
     }, [modelActions, modelView.editingConnection, mousePos, modelView.pan, createDialog]);
-
-    useEffect(() => {
+    const [prevModelActions, setPrevModelActions] = useState(modelActions);
+    if (modelActions !== prevModelActions) {
+        setPrevModelActions(modelActions);
         setCreateDialog(undefined);
-    }, [modelActions]);
+    }
 
     useImperativeHandle(fref, () => {
         return {
@@ -387,7 +393,7 @@ const RillEditorImpl: ForwardRefRenderFunction<RillEditorRef, RillEditorProps> =
                                     >
                                         <ControlsPanel
                                             controls={prefs.controls}
-                                            editorElement={ref.current || null}
+                                            editorElement={editorElement}
                                             readonly={readonly}
                                         >
                                             {prefs.controlsChildren}
