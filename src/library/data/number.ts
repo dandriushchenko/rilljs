@@ -44,7 +44,7 @@ export function numberSanitizer(rules: { min?: number; max?: number; integer?: b
       adjusted = rules.max;
     }
 
-    if (rules?.integer) {
+    if (rules.integer !== undefined) {
       adjusted = Math.floor(adjusted);
     }
 
