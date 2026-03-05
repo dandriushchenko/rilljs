@@ -44,8 +44,7 @@ export function Select<I>(props: SelectProps<I>) {
     defaultSelected ? items.findIndex((i) => i === defaultSelected) : -1
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
-  function onFilterChange(event: React.FormEvent<HTMLInputElement>) {
+  function onFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
     setFilter(event.currentTarget.value);
     setActiveItem(0);
   }

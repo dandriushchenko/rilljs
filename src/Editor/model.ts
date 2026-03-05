@@ -1025,8 +1025,10 @@ function buildActionsState(
       connectionType: type,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return res!;
+    if (!res) {
+      throw new Error('Failed to create connection');
+    }
+    return res;
   }
 
   function updateConnection(id: string, from?: Port, to?: Port, disabled?: boolean) {

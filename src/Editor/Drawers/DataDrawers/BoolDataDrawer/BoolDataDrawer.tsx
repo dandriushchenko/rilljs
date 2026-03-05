@@ -12,18 +12,12 @@ export function BoolDataDrawer(props: BoolDataDrawerProps) {
   const { readonly } = options;
   const [, redraw] = useState({});
 
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
-  function onChange(event: React.FormEvent<HTMLInputElement>) {
+  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     const v = event.currentTarget.checked;
     onValueChange(v);
     redraw({});
   }
 
-  // const {
-  //     label,
-  //     labelHelp,
-  //     help
-  // } = useControlGroupLabels(value);
   const label = 'Bool';
   const help = 'help';
   const labelHelp = 'labelHelp';

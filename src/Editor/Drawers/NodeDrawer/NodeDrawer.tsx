@@ -13,8 +13,7 @@ export function NodeDrawer(props: React.PropsWithChildren<NodeDrawerProps>) {
   const classes = theme.classes;
   const design = node.designDefn;
 
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
-  function onNodeNameChange(event: React.FormEvent<HTMLInputElement>) {
+  function onNodeNameChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.currentTarget.value;
     if (node.nodeName === value) {
       return;

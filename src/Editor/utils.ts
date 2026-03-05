@@ -35,7 +35,6 @@ export function copyModelJSON(actions: ModelActions, nodesToCopy: ModelNodeState
     nodesIDs.includes(c.connection.source.node) && nodesIDs.includes(c.connection.destination.node) ? true : false;
   const connections = actions.findConnections(isConnectionBetweenNodes).map((c) => c.connection);
   // Make a clone of it
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const cbData: ModelChunkJSON = JSON.parse(
     JSON.stringify({
       nodes: nodesJSON,
@@ -44,7 +43,7 @@ export function copyModelJSON(actions: ModelActions, nodesToCopy: ModelNodeState
       ref: 'rill',
       version: 1,
     })
-  );
+  ) as ModelChunkJSON;
   return cbData;
 }
 
@@ -61,8 +60,7 @@ export function pasteModelJSON(chunk: Partial<ModelChunkJSON>, actions: ModelAct
   }
 
   // before we proceed, make a clone of the chunk model
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const json: ModelChunkJSON = JSON.parse(JSON.stringify(chunk));
+  const json: ModelChunkJSON = JSON.parse(JSON.stringify(chunk)) as ModelChunkJSON;
 
   const nodesRemap: Record<string, string> = {};
   const nodesRemapReverse: Record<string, string> = {};
@@ -115,6 +113,9 @@ export function pasteModelJSON(chunk: Partial<ModelChunkJSON>, actions: ModelAct
     minY = 0;
   }
 
+  const offsetX = minX;
+  const offsetY = minY;
+
   const nodesWithDesign = nodes.map((n) => {
     const design = json.nodesDesign[nodesRemapReverse[n.nodeID]];
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -124,10 +125,8 @@ export function pasteModelJSON(chunk: Partial<ModelChunkJSON>, actions: ModelAct
     return {
       node: n,
       pos: {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        x: -pan.x + BasicShift + (design.pos.x - minX!),
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        y: -pan.y + BasicShift + (design.pos.y - minY!),
+        x: -pan.x + BasicShift + (design.pos.x - offsetX),
+        y: -pan.y + BasicShift + (design.pos.y - offsetY),
       },
     };
   });
