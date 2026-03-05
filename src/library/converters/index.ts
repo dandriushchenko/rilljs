@@ -6,8 +6,5 @@ import { type ConverterFrom, type ConverterTo } from '../../model';
 export * from './bool';
 export * from './text';
 
-export const BuiltinConverters = [
-    boolConverter,
-    numberConverter,
-    textConverter
-] as unknown as (ConverterFrom & ConverterTo)[];
+export const BuiltinConverters = [boolConverter, numberConverter, textConverter] as unknown as (ConverterFrom &
+  ConverterTo)[];

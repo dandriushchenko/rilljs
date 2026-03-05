@@ -1,17 +1,13 @@
 import React from 'react';
 
 export interface NodeContentProps {
-    width: number;
-    height: number;
+  width: number;
+  height: number;
 }
 
 export function Content(props: React.PropsWithChildren<NodeContentProps>) {
-    // const { width, height } = props;
-    return (
-        <>
-            {props.children}
-        </>
-    );
+  // const { width, height } = props;
+  return <>{props.children}</>;
 }
 
 /*

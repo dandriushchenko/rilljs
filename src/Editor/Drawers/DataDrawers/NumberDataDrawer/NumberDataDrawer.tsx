@@ -7,31 +7,20 @@ import { type DataDrawerProps } from '../../props';
 export type NumberDataDrawerProps = DataDrawerProps<number, RNumber>;
 
 export function NumberDataDrawer(props: NumberDataDrawerProps) {
-    const {
-        value,
-        onValueChange,
-        options
-    } = props;
+  const { value, onValueChange, options } = props;
 
-    const { readonly } = options;
-    const [, redraw] = useState({});
+  const { readonly } = options;
+  const [, redraw] = useState({});
 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    function onChange(event: React.FormEvent<HTMLInputElement>) {
-        let v = +event.currentTarget.value;
-        if (isNaN(v)){
-            v = 0;
-        }
-        onValueChange(v);
-        redraw({});
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  function onChange(event: React.FormEvent<HTMLInputElement>) {
+    let v = +event.currentTarget.value;
+    if (isNaN(v)) {
+      v = 0;
     }
+    onValueChange(v);
+    redraw({});
+  }
 
-    return (
-        <InputField
-            type="text"
-            value={value.value}
-            onChange={onChange}
-            disabled={readonly}
-        />
-    );    
+  return <InputField type='text' value={value.value} onChange={onChange} disabled={readonly} />;
 }

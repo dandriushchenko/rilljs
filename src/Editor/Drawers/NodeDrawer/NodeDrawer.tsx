@@ -31,16 +31,7 @@ export function NodeDrawer(props: React.PropsWithChildren<NodeDrawerProps>) {
   const valueOutputs = node.getValueOutputs();
 
   function renderValue(v: IOValue) {
-    return (
-      <ValueDrawer
-        key={v.id}
-        value={v}
-        node={node}
-        actions={actions}
-        options={options}
-        theme={theme}
-      />
-    );
+    return <ValueDrawer key={v.id} value={v} node={node} actions={actions} options={options} theme={theme} />;
   }
 
   const onKeyUp = useCallback(
@@ -58,9 +49,7 @@ export function NodeDrawer(props: React.PropsWithChildren<NodeDrawerProps>) {
       }
 
       if (['Backspace', 'Delete'].includes(event.key)) {
-        actions.deleteNodes(
-          actions.getSelectedNodes().map((n) => n.node.nodeID)
-        );
+        actions.deleteNodes(actions.getSelectedNodes().map((n) => n.node.nodeID));
       }
     },
     [actions]
@@ -75,24 +64,13 @@ export function NodeDrawer(props: React.PropsWithChildren<NodeDrawerProps>) {
 
   return (
     <div className={classes.node.container}>
-      <div
-        className={classes.node.header}
-        style={
-          design?.color ? { backgroundColor: design.color } : undefined
-        }
-      >
+      <div className={classes.node.header} style={design?.color ? { backgroundColor: design.color } : undefined}>
         <span>{node.nodeName ?? node.defn.name ?? node.defn.class}</span>
       </div>
       <div className={classes.node.content}>
-        {invalid && invalid !== '' && (
-          <div className={classes.node.error}>{invalid}</div>
-        )}
+        {invalid && invalid !== '' && <div className={classes.node.error}>{invalid}</div>}
         <ControlGroup label='Node Name'>
-          <InputField
-            value={node.nodeName ?? ''}
-            onChange={onNodeNameChange}
-            disabled={readonly}
-          />
+          <InputField value={node.nodeName ?? ''} onChange={onNodeNameChange} disabled={readonly} />
         </ControlGroup>
         {valueInternals.map((vi) => renderValue(vi))}
         {valueInputs.length > 0 && <Divider />}

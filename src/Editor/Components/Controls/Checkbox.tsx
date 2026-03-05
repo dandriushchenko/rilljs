@@ -3,30 +3,20 @@ import { type ControlProps, Control } from './Control';
 import { type Theme, ThemeContext } from '../../theme';
 
 export type CheckboxProps = ControlProps;
-    // defaultIndeterminate?: boolean;
-    // indeterminate?: boolean;
+// defaultIndeterminate?: boolean;
+// indeterminate?: boolean;
 
 export function Checkbox(props: CheckboxProps) {
-    const {
-        onChange,
-        ...rest
-    } = props;
+  const { onChange, ...rest } = props;
 
-    const theme = useContext<Theme>(ThemeContext).classes.controls;
+  const theme = useContext<Theme>(ThemeContext).classes.controls;
 
-    // const [indeterminate, setIndeterminate] = useState(props.indeterminate || props.defaultIndeterminate || false);
-    // useEffect(() => {
-    //     if (typeof indeterminate !== 'undefined') {
-    //         setIndeterminate(indeterminate);
-    //     }
-    // }, [props.indeterminate]);
+  // const [indeterminate, setIndeterminate] = useState(props.indeterminate || props.defaultIndeterminate || false);
+  // useEffect(() => {
+  //     if (typeof indeterminate !== 'undefined') {
+  //         setIndeterminate(indeterminate);
+  //     }
+  // }, [props.indeterminate]);
 
-    return (
-        <Control
-            {...rest}
-            type="checkbox"
-            onChange={onChange}
-            typeClassName={theme.checkbox}
-        />
-    );
+  return <Control {...rest} type='checkbox' onChange={onChange} typeClassName={theme.checkbox} />;
 }

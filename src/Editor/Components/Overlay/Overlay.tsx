@@ -8,7 +8,7 @@ import React, {
 
 import { Portal } from './Portal';
 import { type Theme, ThemeContext } from '../../theme';
-import { Keys } from '../keys';
+import { KeyNames } from '../keys';
 import { bringFocus } from '../utils';
 
 export interface OverlayProps {
@@ -67,8 +67,7 @@ export const Overlay = React.memo((props: React.PropsWithChildren<OverlayProps>)
         return;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      if (event.which === Keys.Esc) {
+      if (event.key === KeyNames.Esc) {
         onClose();
         event.preventDefault();
       }

@@ -1,5 +1,4 @@
-
 export interface Port {
-    node: string;
-    port: string;
+  node: string;
+  port: string;
 }

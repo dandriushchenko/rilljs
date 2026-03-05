@@ -1,4 +1,4 @@
 export interface GroupDesign {
-    nodes: string[];
-    name: string;
+  nodes: string[];
+  name: string;
 }

@@ -1,14 +1,14 @@
 import { Executor } from '../../../../model';
 
 export class ConsoleLogExecutor extends Executor {
-    protected message: string;
+  protected message: string;
 
-    constructor(message: string) {
-        super();
-        this.message = message;
-    }
+  constructor(message: string) {
+    super();
+    this.message = message;
+  }
 
-    run() {
-        console.log(this.message);
-    }
+  run() {
+    console.log(this.message);
+  }
 }

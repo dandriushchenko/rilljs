@@ -1,12 +1,12 @@
 import { type Action } from '../action';
 
 export interface GroupNodes extends Action {
-    type: 'GroupNodes';
-    ids: string[];
-    name: string;
+  type: 'GroupNodes';
+  ids: string[];
+  name: string;
 }
 
 export interface UngroupNodes extends Action {
-    type: 'UngroupNodes';
-    id: string;
+  type: 'UngroupNodes';
+  id: string;
 }

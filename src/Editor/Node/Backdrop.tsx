@@ -3,26 +3,15 @@ import React, { useContext } from 'react';
 import { type Theme, ThemeContext } from '../theme';
 
 export interface BackdropProps {
-    width: number;
-    height: number;
-    onMouseDown?: (event: React.MouseEvent) => void;
+  width: number;
+  height: number;
+  onMouseDown?: (event: React.MouseEvent) => void;
 }
 
 export function Backdrop(props: BackdropProps) {
-    const {
-        width,
-        height,
-        onMouseDown
-    } = props;
+  const { width, height, onMouseDown } = props;
 
-    const theme = useContext<Theme>(ThemeContext).canvas.node.panel;
+  const theme = useContext<Theme>(ThemeContext).canvas.node.panel;
 
-    return (
-        <rect
-            height={height}
-            width={width}
-            onMouseDown={onMouseDown}
-            className={theme}
-        />
-    );
+  return <rect height={height} width={width} onMouseDown={onMouseDown} className={theme} />;
 }

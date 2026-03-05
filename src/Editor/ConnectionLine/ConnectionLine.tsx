@@ -1,7 +1,4 @@
-import React, {
-    useMemo,
-    useContext
-} from 'react';
+import React, { useMemo, useContext } from 'react';
 
 import { type Connection, type ConnectionDesign, ConnectionType, type Coords } from '../../model';
 import { type ModelNodeState } from '../model';
@@ -11,114 +8,107 @@ import { Line } from './Line';
 import { mergeClasses } from '../Components';
 
 export interface ConnectionProps {
-    connection: Connection;
-    design: ConnectionDesign;
-    from: ModelNodeState;
-    to: ModelNodeState;
-    fromCoordsOverride?: Coords;
-    toCoordsOverride?: Coords;
-    disabled?: boolean;
-    selected?: boolean;
-    invalid?: string;
-    onClick?: () => void;
+  connection: Connection;
+  design: ConnectionDesign;
+  from: ModelNodeState;
+  to: ModelNodeState;
+  fromCoordsOverride?: Coords;
+  toCoordsOverride?: Coords;
+  disabled?: boolean;
+  selected?: boolean;
+  invalid?: string;
+  onClick?: () => void;
 }
 
 function ConnectionLineImpl(props: ConnectionProps) {
-    const {
-        connection,
-        from: fromNodeState,
-        to: toNodeState,
-        disabled,
-        fromCoordsOverride,
-        toCoordsOverride,
-        invalid,
-        onClick
-    } = props;
+  const {
+    connection,
+    from: fromNodeState,
+    to: toNodeState,
+    disabled,
+    fromCoordsOverride,
+    toCoordsOverride,
+    invalid,
+    onClick,
+  } = props;
 
-    const theme = useContext<Theme>(ThemeContext);
-    const connectionTheme = theme.canvas.connection;
-    const themeClasses = theme.classes;
-    
-    const active = false;
-    // const [playAnim, setPlayAnim] = useState(false);
-    const classes = useMemo(() => {
-        return mergeClasses(
-            connectionTheme.base,
-            {
-                [themeClasses.disabled]: disabled,
-                [themeClasses.active]: active,
-                [themeClasses.error]: invalid
-            }
-        );
-    }, [
-        connectionTheme.base,
-        themeClasses,
-        disabled,
-        active,
-        invalid
-    ]);
+  const theme = useContext<Theme>(ThemeContext);
+  const connectionTheme = theme.canvas.connection;
+  const themeClasses = theme.classes;
 
-    const { from, to } = useMemo(() => {
-        const fromMap = calcNodeAndPortsLayout(fromNodeState.node, fromNodeState.design, theme.canvas, true);
-        const toMap = calcNodeAndPortsLayout(toNodeState.node, toNodeState.design, theme.canvas, true);
-        let fromCoords: Coords | undefined;
-        let toCoords: Coords | undefined;
+  const active = false;
+  // const [playAnim, setPlayAnim] = useState(false);
+  const classes = useMemo(() => {
+    return mergeClasses(connectionTheme.base, {
+      [themeClasses.disabled]: disabled,
+      [themeClasses.active]: active,
+      [themeClasses.error]: invalid,
+    });
+  }, [connectionTheme.base, themeClasses, disabled, active, invalid]);
 
-        switch (connection.type) {
-            case ConnectionType.Flow:
-                fromCoords = fromMap.flowsOut[connection.source.port].port;
-                toCoords = toMap.flowsIn[connection.destination.port].port;
-                break;
+  const { from, to } = useMemo(() => {
+    const fromMap = calcNodeAndPortsLayout(fromNodeState.node, fromNodeState.design, theme.canvas, true);
+    const toMap = calcNodeAndPortsLayout(toNodeState.node, toNodeState.design, theme.canvas, true);
+    let fromCoords: Coords | undefined;
+    let toCoords: Coords | undefined;
 
-            case ConnectionType.Value:
-                fromCoords = fromMap.valuesOut[connection.source.port].port;
-                toCoords = toMap.valuesIn[connection.destination.port].port;
-                break;                
-        }
+    switch (connection.type) {
+      case ConnectionType.Flow:
+        fromCoords = fromMap.flowsOut[connection.source.port].port;
+        toCoords = toMap.flowsIn[connection.destination.port].port;
+        break;
 
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (!fromCoords || !toCoords) {
-            throw new Error(`Invalid from / to nodes port in connection ${connection.id}. From: ${JSON.stringify(connection.source)}, To: ${JSON.stringify(connection.destination)}`);
-        }
+      case ConnectionType.Value:
+        fromCoords = fromMap.valuesOut[connection.source.port].port;
+        toCoords = toMap.valuesIn[connection.destination.port].port;
+        break;
+    }
 
-        return {
-            from: {
-                x: fromCoords.x + fromNodeState.design.x,
-                y: fromCoords.y + fromNodeState.design.y,
-            },
-            to: {
-                x: toCoords.x + toNodeState.design.x,
-                y: toCoords.y + toNodeState.design.y,
-            }
-        };
-    }, [connection, fromNodeState, toNodeState, theme]);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!fromCoords || !toCoords) {
+      throw new Error(
+        `Invalid from / to nodes port in connection ${connection.id}. From: ${JSON.stringify(connection.source)}, To: ${JSON.stringify(connection.destination)}`
+      );
+    }
 
-    // function onClick() {
-    //     setPlayAnim(true);
-    // }
+    return {
+      from: {
+        x: fromCoords.x + fromNodeState.design.x,
+        y: fromCoords.y + fromNodeState.design.y,
+      },
+      to: {
+        x: toCoords.x + toNodeState.design.x,
+        y: toCoords.y + toNodeState.design.y,
+      },
+    };
+  }, [connection, fromNodeState, toNodeState, theme]);
 
-    // function onAnimationStart() {
-    //     setPlayAnim(false);
-    // }
+  // function onClick() {
+  //     setPlayAnim(true);
+  // }
 
-    // function onAnimationEnd() {
-    //     setPlayAnim(false);
-    // }
+  // function onAnimationStart() {
+  //     setPlayAnim(false);
+  // }
 
-    return (
-        <Line
-            from={fromCoordsOverride ?? from}
-            to={toCoordsOverride ?? to}
-            type={connection.type}
-            vector={!toCoordsOverride && !fromCoordsOverride ? true : false}
-            className={classes}
-            onClick={onClick}
+  // function onAnimationEnd() {
+  //     setPlayAnim(false);
+  // }
 
-            // className={playAnim ? 'rill-connection-run-anim' : undefined}
-            // onAnimationEnd={onAnimationEnd}
-            // onAnimationStart={onAnimationStart}
-        />
-    );
+  return (
+    <Line
+      from={fromCoordsOverride ?? from}
+      to={toCoordsOverride ?? to}
+      type={connection.type}
+      vector={!toCoordsOverride && !fromCoordsOverride ? true : false}
+      className={classes}
+      onClick={onClick}
+
+      // className={playAnim ? 'rill-connection-run-anim' : undefined}
+      // onAnimationEnd={onAnimationEnd}
+      // onAnimationStart={onAnimationStart}
+    />
+  );
 }
 
 export const ConnectionLine = React.memo(ConnectionLineImpl);

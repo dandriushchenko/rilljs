@@ -8,7 +8,7 @@ export * from './number';
 export * from './text';
 
 export const BuiltinDataTypes: (DatumConstructor<boolean> | DatumConstructor<string> | DatumConstructor<number>)[] = [
-    Bool,
-    Text,
-    RNumber
+  Bool,
+  Text,
+  RNumber,
 ];

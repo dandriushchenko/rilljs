@@ -8,10 +8,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: isDemo ? '/rilljs/' : '/',
-    plugins: [
-      react(),
-      ...(!isDemo ? [dts({ insertTypesEntry: true })] : [])
-    ],
+    plugins: [react(), ...(!isDemo ? [dts({ insertTypesEntry: true })] : [])],
     build: {
       outDir: isDemo ? 'dist-demo' : 'dist',
       ...(isDemo
@@ -20,7 +17,7 @@ export default defineConfig(({ mode }) => {
             lib: {
               entry: resolve(__dirname, 'src/index.ts'),
               name: 'RillJS',
-              fileName: (format) => `rilljs.${format}.js`
+              fileName: (format) => `rilljs.${format}.js`,
             },
             rollupOptions: {
               external: ['react', 'react-dom', 'styled-components'],
@@ -28,11 +25,11 @@ export default defineConfig(({ mode }) => {
                 globals: {
                   react: 'React',
                   'react-dom': 'ReactDOM',
-                  'styled-components': 'styled'
-                }
-              }
-            }
-          })
-    }
+                  'styled-components': 'styled',
+                },
+              },
+            },
+          }),
+    },
   };
 });

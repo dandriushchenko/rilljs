@@ -1,7 +1,7 @@
-import {snippets} from "./snippets.ts";
-import {BrowserAlert, BrowserPrompt, ConsoleLog} from "./library";
-import {Graph} from "./model";
-import {RillEditor} from "./Editor";
+import { snippets } from './snippets.ts';
+import { BrowserAlert, BrowserPrompt, ConsoleLog } from './library';
+import { Graph } from './model';
+import { RillEditor } from './Editor';
 import './Editor/themes/theme.css';
 
 const graph = new Graph();
@@ -24,21 +24,19 @@ graph.createFlowConnection(n2, n3);
 graph.createFlowConnection(n3, p1);
 graph.createFlowConnection(p1, p2);
 
-graph.createDataConnection({node: p1, port: 'result'}, {node: p2, port: 'message'});
-
+graph.createDataConnection({ node: p1, port: 'result' }, { node: p2, port: 'message' });
 
 export function App() {
-    return (
-        <div
-            style={{
-                height: 'calc(100vh - 20px)',
-                width: 'calc(100% - 20px)',
-                padding: 10,
-                backgroundColor: '#2d2828'
-            }}
-        >
-
-            <RillEditor graph={graph} options={{design: {snippets}} as never}/>
-        </div>
-    );
+  return (
+    <div
+      style={{
+        height: 'calc(100vh - 20px)',
+        width: 'calc(100% - 20px)',
+        padding: 10,
+        backgroundColor: '#2d2828',
+      }}
+    >
+      <RillEditor graph={graph} options={{ design: { snippets } } as never} />
+    </div>
+  );
 }

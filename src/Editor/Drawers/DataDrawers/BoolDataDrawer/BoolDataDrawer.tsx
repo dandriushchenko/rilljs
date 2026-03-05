@@ -7,48 +7,39 @@ import { type DataDrawerProps } from '../../props';
 export type BoolDataDrawerProps = DataDrawerProps<boolean, Bool>;
 
 export function BoolDataDrawer(props: BoolDataDrawerProps) {
-    const {
-        value,
-        theme,
-        options,
-        onValueChange
-    } = props;
+  const { value, theme, options, onValueChange } = props;
 
-    const { readonly } = options;
-    const [, redraw] = useState({});
+  const { readonly } = options;
+  const [, redraw] = useState({});
 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    function onChange(event: React.FormEvent<HTMLInputElement>) {
-        const v = event.currentTarget.checked;
-        onValueChange(v);
-        redraw({});
-    }
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  function onChange(event: React.FormEvent<HTMLInputElement>) {
+    const v = event.currentTarget.checked;
+    onValueChange(v);
+    redraw({});
+  }
 
-    // const {
-    //     label,
-    //     labelHelp,
-    //     help
-    // } = useControlGroupLabels(value);
-    const label = 'Bool';
-    const help = 'help';
-    const labelHelp = 'labelHelp';
+  // const {
+  //     label,
+  //     labelHelp,
+  //     help
+  // } = useControlGroupLabels(value);
+  const label = 'Bool';
+  const help = 'help';
+  const labelHelp = 'labelHelp';
 
-    return (
-        <>
-            <Switch
-                label={label}
-                checked={value.value}
-                onChange={onChange}
-                disabled={readonly}
-            />
-            {
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                (help || labelHelp) &&
-                <div className={theme.classes.help}>
-                    {labelHelp}
-                    {help}
-                </div>
-            }
-        </>
-    );    
+  return (
+    <>
+      <Switch label={label} checked={value.value} onChange={onChange} disabled={readonly} />
+      {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        (help || labelHelp) && (
+          <div className={theme.classes.help}>
+            {labelHelp}
+            {help}
+          </div>
+        )
+      }
+    </>
+  );
 }

@@ -6,22 +6,16 @@ import { type BaseProps, mergeClasses } from '../../Components';
 import { type Theme, ThemeContext } from '../../theme';
 
 export interface PortZoneProps extends BaseProps {
-    x: number;
-    y: number;
-    port: Port;
+  x: number;
+  y: number;
+  port: Port;
 
-    readonly?: boolean;
+  readonly?: boolean;
 }
 
-export const PortZone = React.memo((props: PortZoneProps) => {
-    const {
-        x,
-        y,
-        port,
-        className,
-        style,
-        readonly
-    } = props;
+export const PortZone = React.memo(
+  (props: PortZoneProps) => {
+    const { x, y, port, className, style, readonly } = props;
 
     const actions = useContext<ModelActions>(ModelActionsContext);
     const theme = useContext<Theme>(ThemeContext);
@@ -29,83 +23,90 @@ export const PortZone = React.memo((props: PortZoneProps) => {
     const [droppable, setDroppable] = useState(false);
 
     const classes = useMemo(() => {
-        return mergeClasses(
-            className,
-            {
-                [theme.classes.active]: active,
-                [theme.classes.target]: droppable
-            }
-        );
+      return mergeClasses(className, {
+        [theme.classes.active]: active,
+        [theme.classes.target]: droppable,
+      });
     }, [className, theme, droppable, active]);
 
-    const onMouseEnter = useCallback((event: React.MouseEvent) => {
+    const onMouseEnter = useCallback(
+      (event: React.MouseEvent) => {
         if (readonly) {
-            return;
+          return;
         }
 
         const ongoingConnection = actions.getOngoingConnection();
         if (ongoingConnection) {
-            if (actions.isValidConnection(ongoingConnection.port, port)) {
-                setDroppable(true);
-                const mousePos = actions.adjustPageCoords({
-                    x: event.clientX,
-                    y: event.clientY
-                });
-                actions.updateConnectionEditTarget(port, mousePos);
-            }
-            setActive(false);
+          if (actions.isValidConnection(ongoingConnection.port, port)) {
+            setDroppable(true);
+            const mousePos = actions.adjustPageCoords({
+              x: event.clientX,
+              y: event.clientY,
+            });
+            actions.updateConnectionEditTarget(port, mousePos);
+          }
+          setActive(false);
         } else {
-            setActive(true);
+          setActive(true);
         }
-    }, [readonly, actions, port]);
+      },
+      [readonly, actions, port]
+    );
 
-    const onMouseLeave = useCallback((event: React.MouseEvent) => {
+    const onMouseLeave = useCallback(
+      (event: React.MouseEvent) => {
         if (readonly) {
-            return;
+          return;
         }
 
         setActive(false);
         if (droppable) {
-            const mousePos = actions.adjustPageCoords({
-                x: event.clientX,
-                y: event.clientY
-            });
-            actions.updateConnectionEditTarget(undefined, mousePos);
+          const mousePos = actions.adjustPageCoords({
+            x: event.clientX,
+            y: event.clientY,
+          });
+          actions.updateConnectionEditTarget(undefined, mousePos);
         }
         setDroppable(false);
-    }, [readonly, actions, droppable]);
+      },
+      [readonly, actions, droppable]
+    );
 
-    const onMouseDown = useCallback((event: React.MouseEvent) => {
+    const onMouseDown = useCallback(
+      (event: React.MouseEvent) => {
         if (readonly) {
-            return;
+          return;
         }
 
         const mousePos = actions.adjustPageCoords({
-            x: event.clientX,
-            y: event.clientY
+          x: event.clientX,
+          y: event.clientY,
         });
         actions.beginConnectionEdit(port, mousePos);
-    }, [readonly, actions, port]);
+      },
+      [readonly, actions, port]
+    );
 
     const onMouseUp = useCallback(() => {
-        if (readonly) {
-            return;
-        }
+      if (readonly) {
+        return;
+      }
     }, [readonly]);
 
     return (
-        <circle
-            onMouseDown={onMouseDown}
-            onMouseUp={onMouseUp}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            className={classes}
-            cx={x}
-            cy={y}
-            style={style}
-        />
+      <circle
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        className={classes}
+        cx={x}
+        cy={y}
+        style={style}
+      />
     );
-}, (prev, next) =>
+  },
+  (prev, next) =>
     prev.x === next.x &&
     prev.y === next.y &&
     prev.port.node === next.port.node &&
