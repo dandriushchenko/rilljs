@@ -48,3 +48,10 @@ input:focus {
     rgba(2, 0, 36, 1) 100%
   );
 }
+
+.app-container {
+  height: calc(100vh - 20px);
+  width: calc(100% - 20px);
+  padding: 10px;
+  background-color: #2d2828;
+}

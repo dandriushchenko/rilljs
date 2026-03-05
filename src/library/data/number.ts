@@ -44,7 +44,6 @@ export function numberSanitizer(rules: { min?: number; max?: number; integer?: b
       adjusted = rules.max;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (rules?.integer) {
       adjusted = Math.floor(adjusted);
     }

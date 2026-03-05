@@ -1,4 +1,5 @@
-import { type ConnectionType, type Snippet } from './index.ts';
+import type { Snippet } from '../Editor';
+import type { ConnectionType } from '../model';
 
 export const snippets: Snippet[] = [
   {

@@ -34,6 +34,7 @@ import { EditOverlay } from './EditOverlay';
 import { ControlsPanel } from './ControlsPanel';
 import { type BaseProps, mergeClasses } from './Components';
 import { type RillEditorHooks, RillEditorHooksContext } from './editorHooks';
+import './themes/theme.css';
 
 export interface RillEditorProps extends BaseProps {
   graph: Graph;

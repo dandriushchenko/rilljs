@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
-import circulardependency from 'vite-plugin-circular-dependency';
 import { resolve } from 'path';
 
 export default defineConfig(({ mode }) => {
@@ -9,7 +8,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: isDemo ? '/rilljs/' : '/',
-    plugins: [react(), circulardependency(), ...(!isDemo ? [dts({ insertTypesEntry: true })] : [])],
+    plugins: [react(), ...(!isDemo ? [dts({ insertTypesEntry: true })] : [])],
     build: {
       outDir: isDemo ? 'dist-demo' : 'dist',
       ...(isDemo
