@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
+import circulardependency from 'vite-plugin-circular-dependency';
 import { resolve } from 'path';
 
 export default defineConfig(({ mode }) => {
@@ -8,7 +9,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: isDemo ? '/rilljs/' : '/',
-    plugins: [react(), ...(!isDemo ? [dts({ insertTypesEntry: true })] : [])],
+    plugins: [react(), circulardependency(), ...(!isDemo ? [dts({ insertTypesEntry: true })] : [])],
     build: {
       outDir: isDemo ? 'dist-demo' : 'dist',
       ...(isDemo
@@ -20,12 +21,11 @@ export default defineConfig(({ mode }) => {
               fileName: (format) => `rilljs.${format}.js`,
             },
             rollupOptions: {
-              external: ['react', 'react-dom', 'styled-components'],
+              external: ['react', 'react-dom'],
               output: {
                 globals: {
                   react: 'React',
                   'react-dom': 'ReactDOM',
-                  'styled-components': 'styled',
                 },
               },
             },
