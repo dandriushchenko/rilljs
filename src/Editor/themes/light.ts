@@ -1,8 +1,5 @@
-import { type Theme } from '../theme';
-import { defaultOptions } from '../options';
-
 export const LightThemeID = 'light';
-export const lightTheme: Theme = {
+export const lightTheme = {
   name: LightThemeID,
   classes: {
     theme: 'rill rill-light',
@@ -116,10 +113,10 @@ export const lightTheme: Theme = {
         // when filterUnits is userSpaceOnUse. However, if used
         // objectBoundingBox in the filterUnits - it cuts when lines
         // are horizontal or vertical, so we use this unit type.
-        x: defaultOptions.design.boundingBox.x,
-        y: defaultOptions.design.boundingBox.y,
-        width: defaultOptions.design.boundingBox.width,
-        height: defaultOptions.design.boundingBox.height,
+        x: -5000,
+        y: -5000,
+        width: 10000,
+        height: 10000,
         dx: 5,
         dy: 5,
         stdDeviation: 4,

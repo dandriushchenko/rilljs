@@ -18,4 +18,3 @@ export * from './ConnectionEdit';
 export * from './actions';
 export * from './editorHooks';
 export * from './ref';
-export * from './themes';

@@ -1,13 +1,8 @@
-import {
-  type InputFlow,
-  type InputValue,
-  type IOFlow,
-  type Node,
-  NodeInvalidSerializedTypeError,
-  type NodeJSON,
-  type OutputFlow,
-  type OutputValue,
-} from '../nodes';
+import { type Node, type NodeJSON } from '../nodes/node';
+import { type InputFlow, type InputValue } from '../nodes/input';
+import { type OutputFlow, type OutputValue } from '../nodes/output';
+import { type IOFlow } from '../nodes/flow';
+import { NodeInvalidSerializedTypeError } from '../nodes/error';
 import type { Registry } from '../registry';
 import { ConnectionIsNotValid, InstanceDoesntExist, InstanceIDAlreadyExists, InvalidPort } from './error';
 import { type Connection, type ConnectionJSON, ConnectionType, type Port } from '../connections';

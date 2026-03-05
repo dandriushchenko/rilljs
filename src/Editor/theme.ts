@@ -1,35 +1,7 @@
 import React from 'react';
 
-import { darkTheme } from './themes';
+import { darkTheme } from './themes/dark';
 import { type IconName } from './Components';
-
-// export interface PathTheme {
-//     fill?: string;
-//     stroke?: string;
-//     strokeWidth?: number;
-//     strokeDasharray?: number;
-//     opacity?: number;
-//     filter?: string;
-//     rx?: number;
-//     ry?: number;
-// }
-
-// export interface TextTheme {
-//     style?: CSSProperties;
-//     fill?: string;
-//     filter?: string;
-//     className?: string;
-// }
-
-// export interface NodePortBackTheme extends PathTheme {
-//     r: number;
-//     height: number;
-// }
-
-// export interface NodePortTheme {
-//     back: NodePortBackTheme;
-//     text: TextTheme;
-// }
 
 export interface ShadowFilter {
   x?: number | string;
@@ -171,5 +143,5 @@ export interface Theme {
   filters: FiltersTheme;
 }
 
-export const defaultTheme = darkTheme;
+export const defaultTheme = darkTheme as Theme;
 export const ThemeContext = React.createContext<Theme>(defaultTheme);

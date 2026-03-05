@@ -1,7 +1,7 @@
 import { type InputFlow, type InputValue } from './input';
 import { type OutputFlow, type OutputValue } from './output';
 import { type Datum } from '../data';
-import { type Executor } from '../executor';
+import { type Executor } from '../executor/Executor';
 import { newID } from '../utils';
 import {
   NodeInputAlreadyExistsError,
@@ -10,9 +10,9 @@ import {
   NodeOutputAlreadyExistsError,
   NodeOutputDoesntExistError,
 } from './error';
-import { type NodeDesign } from '../design';
+import { type NodeDesign } from '../design/node';
 import { type IOValue, type IOValueConfig } from './value';
-import { type Graph } from '../graph';
+import { type Graph } from '../graph/graph';
 
 export interface NodeDefinition {
   class: string;

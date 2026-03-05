@@ -1,4 +1,4 @@
-import { type Node } from '../nodes';
+import { type Node } from '../nodes/node';
 
 export abstract class ExecutorError extends Error {}
 
