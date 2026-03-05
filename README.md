@@ -4,13 +4,23 @@ Welcome to the RillJS project!
 
 [![Demo](https://img.shields.io/badge/Live_Demo-Play_Now-brightgreen?style=for-the-badge&logo=github)](https://oneznamov.github.io/rilljs/)
 
-This is a React node-based editor designed for high performance and extensibility.
-
 ## Features
 
 - **Visual Node Editor:** Create and connect nodes logically.
 - **Fast Refresh:** Built on top of Vite and React SWC/Babel.
 - **Strictly Typed:** Deeply integrated with modern TypeScript and ESLint type-aware rules.
+
+## Local Development
+
+To start the development server with hot module replacement, run:
+
+```bash
+pnpm dev
+```
+
+This will launch the app in your default browser at [localhost](http://localhost:5173/). Any changes you make to the
+source code
+will be reflected in real-time without needing to refresh the page.
 
 ## Building as an NPM Package
 
@@ -28,7 +38,29 @@ Module (`dist/rilljs.es.js`) and a UMD module (`dist/rilljs.umd.js`).
 If you want to consume this package inside a local application without publishing it to NPM, you can link it or install
 it using a local file path.
 
-**Option 1: Using `pnpm link` (Recommended for active dev)**
+**Option 1: Simplest**
+Inside `rilljs`:
+
+```bash
+pnpm build
+```
+
+Inside `youProject`:
+
+```json
+{
+  "dependencies": {
+    "@user/rilljs": "file:../path/to/local/rilljs/dist"
+  }
+}
+```
+
+Then run `pnpm install` in your target project. This will install the built version of RillJS directly from the local
+pnpm build
+
+---
+
+**Option 2: Using `pnpm link` (Recommended for active dev)**
 Inside `rilljs`:
 
 ```bash
@@ -42,14 +74,7 @@ Inside your target project:
 pnpm link --global rilljs
 ```
 
-**Option 2: Using a local file path dependency**
-Inside your target project's directory, simply point it to the local folder:
-
-```bash
-pnpm add ../path/to/rilljs
-```
-
-Make sure you run `pnpm build` in `rilljs` before starting your target project or after making changes to RillJS!
+---
 
 **Option 3: Overriding an existing remote package version**
 If your target project currently installs RillJS from the NPM registry (e.g., `"@dandriushchenko/rilljs": "^1.1.4"`) and
