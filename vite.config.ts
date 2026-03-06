@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: isDemo ? '/rilljs/' : '/',
-    plugins: [react(), ...(!isDemo ? [dts({ insertTypesEntry: true })] : [])],
+    plugins: [react(), ...(!isDemo ? [dts({ tsconfigPath: './tsconfig.app.json', rollupTypes: true })] : [])],
     build: {
       outDir: isDemo ? 'dist-demo' : 'dist',
       ...(isDemo

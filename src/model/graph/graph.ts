@@ -323,10 +323,10 @@ export class Graph {
     this.nodes = [];
     this.nodesMap = {};
     Object.values(json.nodes).forEach((n) => {
-      const node = registry.create(n.id);
+      const node = registry.create(n.class);
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!node) {
-        throw new NodeInvalidSerializedTypeError(n.id, n);
+        throw new NodeInvalidSerializedTypeError(n.class, n);
       }
       this.nodes.push(node);
       this.nodesMap[node.nodeID] = node;
