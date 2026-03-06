@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { darkTheme } from './themes/dark';
-import { type IconName } from './Components';
+import type { IconName } from './Components/Icons';
 
 export interface ShadowFilter {
   x?: number | string;

@@ -1,4 +1,4 @@
-import { type Design } from './design';
+import type { Design } from './types';
 
 export function layout(design: Design) {
   const nodes = Object.values(design.nodes);

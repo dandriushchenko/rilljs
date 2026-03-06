@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 
-import { type Rect, type Coords, type Registry } from '../model';
+import type { Rect, Coords, Registry } from '../model';
 import { defaultRegistry } from '../library';
-import { type Snippet } from './SnippetsDialog';
-import { type DataDrawerProps, type NodeDrawerProps, defaultDataDrawers } from './Drawers';
+import type { Snippet } from './SnippetsDialog/snippet';
+import type { DataDrawerProps, NodeDrawerProps } from './Drawers';
+import { defaultDataDrawers } from './Drawers';
 
 export const PortConflictPolicy = {
   Allow: 0,

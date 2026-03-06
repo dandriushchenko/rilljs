@@ -12,7 +12,7 @@ import {
 } from './error';
 import { type NodeDesign } from '../design/node';
 import { type IOValue, type IOValueConfig } from './value';
-import { type Graph } from '../graph/graph';
+import type { Graph } from '../graph/graph';
 
 export interface NodeDefinition {
   class: string;

@@ -23,7 +23,7 @@
     "preview": "vite preview",
     "prepare": "pnpm build",
     "format": "prettier --write .",
-    "circular": "dpdm --no-warning --no-tree ./src"
+    "circular": "dpdm -T --no-warning --no-tree ./src"
   },
   "dependencies": {
     "react": "^19.2.0",

@@ -1,5 +1,5 @@
-import { type Node, type NodeConstructor } from '../nodes';
-import { type DatumDefinition, type DatumConstructor } from '../data';
+import type { Node, NodeConstructor } from '../nodes/node';
+import type { DatumDefinition, DatumConstructor } from '../data/datum';
 import { RegistryAlreadyExistsError, RegistryUnknownClassError } from './error';
 
 type NodesMap = Record<

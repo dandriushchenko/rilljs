@@ -1,27 +1,10 @@
-import { type NodeDesign } from './node';
-import { type Node } from '../nodes';
+import type { NodeDesign } from './node';
+import type { Node } from '../nodes';
 import { layout } from './layout';
-import { type ConnectionDesign } from './connection';
-import { type Connection } from '../connections';
-import { type GroupDesign } from './group';
-import { type Coords } from '../types';
-
-export const DesignViewMode = {
-  Detailed: 0,
-  Normal: 1,
-  Minimal: 2,
-} as const;
-export type DesignViewMode = (typeof DesignViewMode)[keyof typeof DesignViewMode];
-
-export interface Design {
-  groups: GroupDesign[];
-  nodes: Record<string, NodeDesign>;
-  connections: Record<string, ConnectionDesign>;
-  pan: Coords;
-  scale: number;
-  mode: DesignViewMode;
-  version: 1;
-}
+import type { ConnectionDesign } from './connection';
+import type { Connection } from '../connections';
+import type { GroupDesign } from './group';
+import { DesignViewMode, type Design } from './types';
 
 export function createDefaultNodeDesign(n: Node): NodeDesign {
   const design = n.designDefn;
