@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master, gh-pages]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 permissions:
   contents: write
@@ -42,7 +42,7 @@ jobs:
         run: pnpm run coverage -- --reporter=json-summary --reporter=json
 
       - name: Generate coverage badge
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: |
           # Extract coverage percentage from coverage-summary.json
           COVERAGE=$(node -e "
@@ -68,7 +68,7 @@ jobs:
           echo "{\"schemaVersion\":1,\"label\":\"coverage\",\"message\":\"${COVERAGE}%\",\"color\":\"${COLOR}\"}" > coverage-badge/coverage.json
 
       - name: Deploy coverage badge to GitHub Pages
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
