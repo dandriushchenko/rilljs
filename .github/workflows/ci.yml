@@ -39,7 +39,7 @@ jobs:
         run: pnpm run build
 
       - name: Test with coverage
-        run: pnpm run coverage -- --reporter=json-summary --reporter=json
+        run: pnpm run coverage -- --coverage.reporter=json-summary --coverage.reporter=text
 
       - name: Generate coverage badge
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
