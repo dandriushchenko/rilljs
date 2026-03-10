@@ -3,8 +3,8 @@ name: Setup Template Repository
 on:
   push:
     branches:
+      - develop
       - master
-      - main
 
 jobs:
   setup-template:
