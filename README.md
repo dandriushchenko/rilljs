@@ -1,46 +1,117 @@
-# Project
+# RillJS
 
-This project is a demo website for the RillJS library.
+Welcome to the RillJS project!
 
-## Available Scripts
+[![Demo](https://img.shields.io/badge/Live_Demo-Play_Now-brightgreen?style=for-the-badge&logo=github)](https://oneznamov.github.io/rilljs/)
+![Coverage](.github/badges/coverage.svg)
+[![CI](https://img.shields.io/github/actions/workflow/status/oneznamov/rilljs/ci.yml?branch=master&style=for-the-badge&logo=github&label=CI)](https://github.com/oneznamov/rilljs/actions/workflows/ci.yml)
 
-In the project directory, you can run:
+## Features
 
-### `yarn start`
+- **Visual Node Editor:** Create and connect nodes logically.
+- **Fast Refresh:** Built on top of Vite and React SWC/Babel.
+- **Strictly Typed:** Deeply integrated with modern TypeScript and ESLint type-aware rules.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Local Development
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+To start the development server with hot module replacement, run:
 
-### `yarn test`
+```bash
+pnpm dev
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This will launch the app in your default browser at [localhost](http://localhost:5173/). Any changes you make to the
+source code
+will be reflected in real-time without needing to refresh the page.
 
-### `yarn build`
+## Building as an NPM Package
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To compile the project and generate the output bundle along with TypeScript definitions `(.d.ts)`, run:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```bash
+pnpm build
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This generates the unified bundle inside the `dist/` directory, optimized for usage in other codebases as both an ES
+Module (`dist/rilljs.es.js`) and a UMD module (`dist/rilljs.umd.js`).
 
-### `yarn eject`
+## Using RillJS locally in another project
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+If you want to consume this package inside a local application without publishing it to NPM, you can link it or install
+it using a local file path.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Option 1: Simplest**
+Inside `rilljs`:
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+pnpm build
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Inside `youProject`:
 
-## Learn More
+```json
+{
+  "dependencies": {
+    "@user/rilljs": "file:../path/to/local/rilljs/dist"
+  }
+}
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Then run `pnpm install` in your target project. This will install the built version of RillJS directly from the local
+pnpm build
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
+
+**Option 2: Using `pnpm link` (Recommended for active dev)**
+Inside `rilljs`:
+
+```bash
+pnpm build
+pnpm link --global
+```
+
+Inside your target project:
+
+```bash
+pnpm link --global rilljs
+```
+
+---
+
+**Option 3: Overriding an existing remote package version**
+If your target project currently installs RillJS from the NPM registry (e.g., `"@dandriushchenko/rilljs": "^1.1.4"`) and
+you want to force it to use your newly-built local folder instead, you can use `pnpm` overrides.
+
+In your target project's `package.json`, add the following:
+
+```json
+{
+  "pnpm": {
+    "overrides": {
+      "@user/rilljs": "link:../path/to/local/rilljs"
+    }
+  }
+}
+```
+
+> [!NOTE]
+> **Working in a Monorepo?**
+> If your target project is a `pnpm` workspace (using `pnpm-workspace.yaml`), you should place the `pnpm.overrides`
+> block inside the **root** `package.json` of the monorepo, _not_ the individual app `package.json`. If you already have
+> existing overrides, just add your local override there so it resolves correctly across the entire workspace! For
+> example:
+>
+> ```json
+> {
+>   "pnpm": {
+>     "overrides": {
+>       "@dyssent/rilljs": "npm:@user/rilljs@^1.1.4",
+>       "@user/rilljs": "link:../path/to/local/rilljs"
+>     }
+>   }
+> }
+> ```
+
+Then run `pnpm install` in your target project. This tells `pnpm` to intercept any requests for the published package
+and resolve them straight to your local `dist` build! Just make sure you run `pnpm build` in your local `rilljs` repo
+first.

@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Test with coverage
+        run: pnpm run coverage
+
+      - name: Update coverage badge
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: |
+          COVERAGE=$(node -e "
+            const fs = require('fs');
+            const summary = JSON.parse(fs.readFileSync('./coverage/coverage-summary.json', 'utf8'));
+            console.log(summary.total.statements.pct);
+          ")
+
+          COLOR="red"
+          if (( $(echo "$COVERAGE >= 90" | bc -l) )); then
+            COLOR="brightgreen"
+          elif (( $(echo "$COVERAGE >= 75" | bc -l) )); then
+            COLOR="green"
+          elif (( $(echo "$COVERAGE >= 60" | bc -l) )); then
+            COLOR="yellow"
+          elif (( $(echo "$COVERAGE >= 40" | bc -l) )); then
+            COLOR="orange"
+          fi
+
+          mkdir -p .github/badges
+          curl -s "https://img.shields.io/badge/coverage-${COVERAGE}%25-${COLOR}?style=for-the-badge" > .github/badges/coverage.svg
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/badges/coverage.svg
+          git diff --cached --quiet || git commit -m "Update coverage badge [skip ci]"
+          git push

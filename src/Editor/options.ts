@@ -1,0 +1,105 @@
+import React, { useMemo } from 'react';
+
+import type { Rect, Coords, Registry } from '../model';
+import { defaultRegistry } from '../library';
+import type { Snippet } from './SnippetsDialog/snippet';
+import type { DataDrawerProps, NodeDrawerProps } from './Drawers';
+import { defaultDataDrawers } from './Drawers';
+
+export const PortConflictPolicy = {
+  Allow: 0,
+  Replace: 1,
+  Reject: 2,
+} as const;
+export type PortConflictPolicy = (typeof PortConflictPolicy)[keyof typeof PortConflictPolicy];
+
+export interface DesignOptions {
+  snapToGrid: boolean;
+  historyLength: number;
+  boundingBox: Rect;
+  distanceThreshold: number;
+  defaultPan?: Coords;
+  defaultScale?: number;
+  minScale: number;
+  maxScale: number;
+  snippets: Snippet[];
+  policy: {
+    ports: {
+      flowOut: PortConflictPolicy;
+      valueIn: PortConflictPolicy;
+    };
+  };
+}
+
+export interface ValidationOptions {
+  selfConnectedNodes: boolean;
+}
+
+export interface DrawersOptions {
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  nodes: Record<string, React.FunctionComponent<NodeDrawerProps> | React.ClassicComponentClass<NodeDrawerProps>>;
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  data: Record<string, React.FunctionComponent<DataDrawerProps> | React.ClassicComponentClass<DataDrawerProps>>;
+}
+
+export const defaultDrawers: DrawersOptions = {
+  nodes: {},
+  data: defaultDataDrawers,
+};
+
+export const defaultValidationOptions: ValidationOptions = {
+  selfConnectedNodes: false,
+};
+
+export const defaultDesignOptions: DesignOptions = {
+  snapToGrid: false,
+  historyLength: 100,
+  boundingBox: {
+    x: -5000,
+    y: -5000,
+    width: 10000,
+    height: 10000,
+  },
+  distanceThreshold: 10,
+  minScale: 0.2,
+  maxScale: 1.5,
+  snippets: [],
+  policy: {
+    ports: {
+      flowOut: PortConflictPolicy.Replace,
+      valueIn: PortConflictPolicy.Replace,
+    },
+  },
+};
+
+export interface Options {
+  registry: Registry;
+  readonly: boolean;
+  design: DesignOptions;
+  validation: ValidationOptions;
+  drawers: DrawersOptions;
+  debug?: boolean;
+}
+
+export const defaultOptions: Options = {
+  registry: defaultRegistry,
+  readonly: false,
+  design: defaultDesignOptions,
+  validation: defaultValidationOptions,
+  drawers: defaultDrawers,
+};
+
+export const OptionsContext = React.createContext<Options>(defaultOptions);
+
+export function useOptions(options?: Partial<Options & { design?: Partial<DesignOptions> }>) {
+  return useMemo(() => {
+    return {
+      ...defaultOptions,
+      ...(options ?? {}),
+      design: {
+        ...defaultDesignOptions,
+        ...(options?.design ?? {}),
+      },
+    };
+  }, [options]);
+}
