@@ -2,9 +2,9 @@
 
 Welcome to the RillJS project!
 
-[![Demo](https://img.shields.io/badge/Live_Demo-Play_Now-brightgreen?style=for-the-badge&logo=github)](https://oneznamov.github.io/rilljs/)
+[![Demo](https://img.shields.io/badge/Live_Demo-Play_Now-brightgreen?style=for-the-badge&logo=github)](https://dandriushchenko.github.io/rilljs/)
 ![Coverage](.github/badges/coverage.svg)
-[![CI](https://img.shields.io/github/actions/workflow/status/oneznamov/rilljs/ci.yml?branch=master&style=for-the-badge&logo=github&label=CI)](https://github.com/oneznamov/rilljs/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/dandriushchenko/rilljs/ci.yml?branch=master&style=for-the-badge&logo=github&label=CI)](https://github.com/dandriushchenko/rilljs/actions/workflows/ci.yml)
 
 ## Features
 
