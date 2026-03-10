@@ -1,0 +1,50 @@
+name: Setup Template Repository
+
+# This workflow allows you to manually trigger it, or you can uncomment the push block below
+on:
+  workflow_dispatch:
+#   push:
+#     branches:
+#       - develop
+#       - master
+
+jobs:
+  setup-template:
+    # Only run this job if the repository is NOT the original 'oneznamov/rilljs'
+    if: ${{ github.repository != 'oneznamov/rilljs' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to push the commits back to the repo
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Replace placeholders in README
+        run: |
+          REPO_OWNER="${{ github.repository_owner }}"
+          REPO_FULL="${{ github.repository }}"
+          REPO_NAME="${{ github.event.repository.name }}"
+
+          # Replace GitHub Pages demo URL
+          sed -i "s|oneznamov\.github\.io/rilljs|$REPO_OWNER.github.io/$REPO_NAME|g" README.md
+
+          # Replace standard repository references (CI badges, action URLs)
+          sed -i "s|oneznamov/rilljs|$REPO_FULL|g" README.md
+
+          # If you want this workflow to delete itself after running, uncomment the following line
+          # rm -f .github/workflows/template-setup.yml
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Stage the updated README
+          git add README.md 
+          
+          # If deleting the workflow above, make sure to add it to git here as well:
+          # git add .github/workflows/template-setup.yml
+
+          git commit -m "chore(template): automate repository setup with new owner links" || echo "No changes to commit"
+          git push
