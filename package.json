@@ -10,7 +10,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/rilljs.es.js",
       "require": "./dist/rilljs.umd.js"
-    }
+    },
+    "./Editor/themes/theme.css": "./dist/rilljs.css"
   },
   "files": [
     "dist"
