@@ -11,13 +11,13 @@
       "import": "./dist/rilljs.es.js",
       "require": "./dist/rilljs.umd.js"
     },
-    "./dist/rilljs.css": {
-      "style": "./dist/rilljs.css",
-      "default": "./dist/rilljs.css"
+    "./dist/styles/theme.css": {
+      "style": "./dist/styles/theme.css",
+      "default": "./dist/styles/theme.css"
     },
     "./Editor/themes/theme.css": {
-      "style": "./dist/rilljs.css",
-      "default": "./dist/rilljs.css"
+      "style": "./dist/styles/theme.css",
+      "default": "./dist/styles/theme.css"
     }
   },
   "files": [

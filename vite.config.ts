@@ -27,6 +27,12 @@ export default defineConfig(({ mode }) => {
                             'react/jsx-dev-runtime'
                         ],
                         output: {
+                            assetFileNames: (assetInfo) => {
+                                if (assetInfo.names.some(n => n.endsWith('.css'))) {
+                                    return 'styles/theme.css';
+                                }
+                                return assetInfo.names[0] ?? 'assets/[name]-[hash][extname]';
+                            },
                             globals: {
                                 react: 'React',
                                 'react-dom': 'ReactDOM',
