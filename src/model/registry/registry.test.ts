@@ -110,12 +110,12 @@ describe('Registry', () => {
         r.registerNode(TestNode1);
         expect(() => {
             r.registerNode(TestNode1);
-        }).toThrowError(RegistryAlreadyExistsError);
+        }).toThrow(RegistryAlreadyExistsError);
 
         r.registerDatum(TestDatum1 as unknown as DatumConstructor);
         expect(() => {
             r.registerDatum(TestDatum1 as unknown as DatumConstructor);
-        }).toThrowError(RegistryAlreadyExistsError);
+        }).toThrow(RegistryAlreadyExistsError);
     });
     
     it('RegistryError instances', () => {

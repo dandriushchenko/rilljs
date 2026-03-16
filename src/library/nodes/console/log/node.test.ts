@@ -28,6 +28,6 @@ describe('Console Log Node', () => {
     const node = new ConsoleLog();
     // Default message is empty string ''
     expect(node.message).toBe('');
-    expect(() => node.executor()).toThrowError(ExecutorUndefinedInputError);
+    expect(() => node.executor()).toThrow(ExecutorUndefinedInputError);
   });
 });

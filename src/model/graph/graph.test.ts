@@ -88,13 +88,13 @@ describe('Graph', () => {
         const cFrom2 = { baseType: 'Base', fromTypes: 'T1', convertFrom: () => '' };
         expect(() => {
             new Graph([], [], [cFrom1, cFrom2], []);
-        }).toThrowError(/ambiguous/);
+        }).toThrow(/ambiguous/);
 
         const cTo1 = { baseType: 'Base', toTypes: 'T3', convertTo: () => '' };
         const cTo2 = { baseType: 'Base', toTypes: 'T3', convertTo: () => '' };
         expect(() => {
             new Graph([], [], [], [cTo1, cTo2]);
-        }).toThrowError(/ambiguous/);
+        }).toThrow(/ambiguous/);
     });
 
     it('adds and gets nodes', () => {
@@ -107,7 +107,7 @@ describe('Graph', () => {
 
         expect(() => {
             g.addNode(n1);
-        }).toThrowError(InstanceIDAlreadyExists);
+        }).toThrow(InstanceIDAlreadyExists);
     });
 
     it('removes nodes and their connections', () => {
@@ -128,7 +128,7 @@ describe('Graph', () => {
 
         expect(() => {
             g.removeNode('X');
-        }).toThrowError(InstanceDoesntExist);
+        }).toThrow(InstanceDoesntExist);
     });
 
     it('port flow fetching', () => {
@@ -167,12 +167,12 @@ describe('Graph', () => {
 
         expect(() => {
             g.addConnection(conn1);
-        }).toThrowError(InstanceIDAlreadyExists);
+        }).toThrow(InstanceIDAlreadyExists);
         
         // Cannot add connection with identical from/to
         expect(() => {
             g.addConnection({ ...conn2, id: 'c_custom' });
-        }).toThrowError(ConnectionIsNotValid);
+        }).toThrow(ConnectionIsNotValid);
         
         // Remove connection
         g.removeConnection(conn1.id);
@@ -180,7 +180,7 @@ describe('Graph', () => {
         
         expect(() => {
             g.removeConnection('X');
-        }).toThrowError(InstanceDoesntExist);
+        }).toThrow(InstanceDoesntExist);
 
         // create flow connection using string branch coverage
         const conn3 = g.createFlowConnection(n1.nodeID, n2.nodeID);
@@ -211,27 +211,27 @@ describe('Graph', () => {
 
         expect(() => {
             g.createFlowConnection(n1, n2);
-        }).toThrowError(InvalidPort);
+        }).toThrow(InvalidPort);
         expect(() => {
             g.createFlowConnection(n2, n1, 'fOut', 'missing');
-        }).toThrowError(/Node input with ID/);
+        }).toThrow(/Node input with ID/);
 
         expect(() => {
             g.createDataConnection({node: n1, port: 'X'}, {node: n2, port: 'vIn'});
-        }).toThrowError(/Node output with ID/);
+        }).toThrow(/Node output with ID/);
         expect(() => {
             g.createDataConnection({node: n2, port: 'vOut'}, {node: n1, port: 'Y'});
-        }).toThrowError(/Node input with ID/);
+        }).toThrow(/Node input with ID/);
 
         expect(() => {
             g.createFlowConnection('unknown', n2);
-        }).toThrowError(InstanceDoesntExist);
+        }).toThrow(InstanceDoesntExist);
         expect(() => {
             g.createDataConnection({node: 'unknown', port: 'v'}, {node: n2, port: 'v'});
-        }).toThrowError(InstanceDoesntExist);
+        }).toThrow(InstanceDoesntExist);
         expect(() => {
             g.createDataConnection({node: n2, port: 'vOut'}, {node: 'unknown', port: 'v'});
-        }).toThrowError(InstanceDoesntExist);
+        }).toThrow(InstanceDoesntExist);
     });
 
     it('custom Add Connection invalid', () => {
@@ -242,10 +242,10 @@ describe('Graph', () => {
         
         expect(() => {
             g.addConnection({ id: 'bad', type: ConnectionType.Value, source: { node: n1.nodeID, port: 'vOut' }, destination: { node: 'Y', port: 'vIn' }});
-        }).toThrowError(ConnectionIsNotValid);
+        }).toThrow(ConnectionIsNotValid);
         expect(() => {
             g.addConnection({ id: 'bad', type: ConnectionType.Flow, source: { node: n1.nodeID, port: 'fOut' }, destination: { node: 'Y', port: 'fIn' }});
-        }).toThrowError(ConnectionIsNotValid);
+        }).toThrow(ConnectionIsNotValid);
     });
 
     it('JSON ser/de', () => {
@@ -268,14 +268,14 @@ describe('Graph', () => {
         const emptyRegistry = new Registry();
         expect(() => {
             Graph.fromJSON(json, emptyRegistry);
-        }).toThrowError(RegistryUnknownClassError);
+        }).toThrow(RegistryUnknownClassError);
 
         // Test unreachable !node branch 
         const undefinedRegistry = new Registry();
         vi.spyOn(undefinedRegistry, 'create').mockReturnValue(undefined as unknown as Node);
         expect(() => {
             Graph.fromJSON(json, undefinedRegistry);
-        }).toThrowError(NodeInvalidSerializedTypeError);
+        }).toThrow(NodeInvalidSerializedTypeError);
     });
 
     it('unreachable port values mocking', () => {
@@ -301,16 +301,16 @@ describe('Graph', () => {
         vi.spyOn(n1, 'getFlowInputs').mockReturnValue([]);
         expect(() => {
             g.createFlowConnection(n2, n1);
-        }).toThrowError(InvalidPort);
+        }).toThrow(InvalidPort);
 
         expect(() => {
             g.createDataConnection({node: n1.nodeID, port: 'vOut'}, {node: n2.nodeID, port: 'vIn'});
-        }).toThrowError(InvalidPort);
+        }).toThrow(InvalidPort);
         
         vi.spyOn(n2, 'getValueInput').mockImplementation(() => undefined as never);
         expect(() => {
             g.createDataConnection({node: n2.nodeID, port: 'vOut'}, {node: n2.nodeID, port: 'vIn'});
-        }).toThrowError(InvalidPort);
+        }).toThrow(InvalidPort);
     });
 
     it('getConverterMethod coverage', () => {

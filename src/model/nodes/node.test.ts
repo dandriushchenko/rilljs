@@ -91,24 +91,24 @@ describe('Node', () => {
     it('throws on non-existent ports', () => {
         const n = new TestN();
 
-        expect(() => n.getFlowInput('fIn')).toThrowError(NodeInputDoesntExistError);
-        expect(() => n.getFlowOutput('fOut')).toThrowError(NodeOutputDoesntExistError);
-        expect(() => n.getValueInput('vIn')).toThrowError(NodeInputDoesntExistError);
-        expect(() => n.getValueOutput('vOut')).toThrowError(NodeOutputDoesntExistError);
-        expect(() => n.getValueInternal('vInt')).toThrowError(NodeInputDoesntExistError);
+        expect(() => n.getFlowInput('fIn')).toThrow(NodeInputDoesntExistError);
+        expect(() => n.getFlowOutput('fOut')).toThrow(NodeOutputDoesntExistError);
+        expect(() => n.getValueInput('vIn')).toThrow(NodeInputDoesntExistError);
+        expect(() => n.getValueOutput('vOut')).toThrow(NodeOutputDoesntExistError);
+        expect(() => n.getValueInternal('vInt')).toThrow(NodeInputDoesntExistError);
     });
 
     it('throws on duplicate ports', () => {
         const n = new TestN();
         n.addTestInputs();
 
-        expect(() => n.addValueInternalPublic('vInt', new DummyDatum('x'))).toThrowError(/already exists/);
-        expect(() => n.addValueInputPublic('vIn', new DummyDatum('x'))).toThrowError(/already exists/);
+        expect(() => n.addValueInternalPublic('vInt', new DummyDatum('x'))).toThrow(/already exists/);
+        expect(() => n.addValueInputPublic('vIn', new DummyDatum('x'))).toThrow(/already exists/);
 
-        expect(() => n.addFlowInputPublic('fIn')).toThrowError(/already exists/);
-        expect(() => n.addFlowOutputPublic('fOut')).toThrowError(/already exists/);
+        expect(() => n.addFlowInputPublic('fIn')).toThrow(/already exists/);
+        expect(() => n.addFlowOutputPublic('fOut')).toThrow(/already exists/);
 
-        expect(() => n.addValueOutputPublic('vOut', new DummyDatum('x'))).toThrowError(/already exists/);
+        expect(() => n.addValueOutputPublic('vOut', new DummyDatum('x'))).toThrow(/already exists/);
     });
 
     it('removes flow safely', () => {
@@ -170,7 +170,7 @@ describe('Node', () => {
                 outputs: {},
                 internal: {},
             });
-        }).toThrowError(NodeInvalidSerializedTypeError);
+        }).toThrow(NodeInvalidSerializedTypeError);
     });
 
     it('undef value serialization safety', () => {
