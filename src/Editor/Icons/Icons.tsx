@@ -50,22 +50,22 @@ export const Icons = React.memo(() => {
           in='shadowInnerInner1'
         ></feColorMatrix>
       </filter>
-      <g id={IconsNames.Arrow} stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>
+      <g id={IconsNames.Arrow} stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>
         <g transform='scale(0.33)'>
           <use
             fill='black'
-            fill-opacity='1'
+            fillOpacity='1'
             filter='url(#rill-icon-shadow-outer)'
             xlinkHref='#rill-icon-arrow-shape'
           ></use>
-          <use fill='#93CA2D' fill-rule='evenodd' xlinkHref='#rill-icon-arrow-shape'></use>
+          <use fill='#93CA2D' fillRule='evenodd' xlinkHref='#rill-icon-arrow-shape'></use>
           <use
             fill='black'
-            fill-opacity='1'
+            fillOpacity='1'
             filter='url(#rill-icon-shadow-inner)'
             xlinkHref='#rill-icon-arrow-shape'
           ></use>
-          <use stroke='#709A21' stroke-width='1' xlinkHref='#rill-icon-arrow-shape'></use>
+          <use stroke='#709A21' strokeWidth='1' xlinkHref='#rill-icon-arrow-shape'></use>
         </g>
       </g>
     </>
