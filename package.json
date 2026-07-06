@@ -34,7 +34,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky",
-    "prepublish": "pnpm build",
+    "prepublishOnly": "pnpm build",
     "format": "prettier --write .",
     "circular": "dpdm -T --no-warning --no-tree ./src",
     "test": "vitest run",
