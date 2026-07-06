@@ -1,15 +1,19 @@
 {
   "name": "@dandriushchenko/rilljs",
-  "version": "2.0.4",
+  "version": "3.0.0",
   "type": "module",
-  "main": "dist/rilljs.umd.js",
   "module": "dist/rilljs.es.js",
   "types": "dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/rilljs.es.js",
-      "require": "./dist/rilljs.umd.js"
+      "import": "./dist/rilljs.es.js"
     },
     "./dist/styles/theme.css": {
       "style": "./dist/styles/theme.css",
