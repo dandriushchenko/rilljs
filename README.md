@@ -32,8 +32,8 @@ To compile the project and generate the output bundle along with TypeScript defi
 pnpm build
 ```
 
-This generates the unified bundle inside the `dist/` directory, optimized for usage in other codebases as both an ES
-Module (`dist/rilljs.es.js`) and a UMD module (`dist/rilljs.umd.js`).
+This generates the bundle inside the `dist/` directory, optimized for usage in other codebases as a pure ES Module
+(`dist/rilljs.es.js`). The package is ESM-only and cannot be consumed via CommonJS `require()`.
 
 ## Using RillJS locally in another project
 
