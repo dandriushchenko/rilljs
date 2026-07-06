@@ -33,7 +33,7 @@
     "build:demo": "vite build -m demo",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prepare": "husky",
+    "prepare": "(husky || true) && pnpm build",
     "prepublishOnly": "pnpm build",
     "format": "prettier --write .",
     "circular": "dpdm -T --no-warning --no-tree ./src",
