@@ -1,5 +1,4 @@
 import type { Snippet } from '../Editor';
-import type { ConnectionType } from '../model';
 
 export const snippets: Snippet[] = [
   {
@@ -71,7 +70,7 @@ export const snippets: Snippet[] = [
             node: '81ca14c2-3c82-4629-adb8-d75ece7e3a98',
             port: 'in',
           },
-          type: 'flow' as ConnectionType,
+          type: 'flow',
         },
         {
           id: '87ccb4ed-fc71-437a-8691-705854fb7ce5',
@@ -83,7 +82,7 @@ export const snippets: Snippet[] = [
             node: '4d5800ca-917f-4d0e-ac0d-22f265249e9d',
             port: 'in',
           },
-          type: 'flow' as ConnectionType,
+          type: 'flow',
         },
         {
           id: 'bd1b83ec-fe31-4f5f-812c-f5f8d312e4ef',
@@ -95,7 +94,7 @@ export const snippets: Snippet[] = [
             node: '4d5800ca-917f-4d0e-ac0d-22f265249e9d',
             port: 'message',
           },
-          type: 'value' as ConnectionType,
+          type: 'value',
         },
       ],
       ref: 'rill',
@@ -171,7 +170,7 @@ export const snippets: Snippet[] = [
             node: '81ca14c2-3c82-4629-adb8-d75ece7e3a98',
             port: 'in',
           },
-          type: 'flow' as ConnectionType,
+          type: 'flow',
         },
         {
           id: '87ccb4ed-fc71-437a-8691-705854fb7ce5',
@@ -183,7 +182,7 @@ export const snippets: Snippet[] = [
             node: '4d5800ca-917f-4d0e-ac0d-22f265249e9d',
             port: 'in',
           },
-          type: 'flow' as ConnectionType,
+          type: 'flow',
         },
         {
           id: 'bd1b83ec-fe31-4f5f-812c-f5f8d312e4ef',
@@ -195,7 +194,7 @@ export const snippets: Snippet[] = [
             node: '4d5800ca-917f-4d0e-ac0d-22f265249e9d',
             port: 'message',
           },
-          type: 'value' as ConnectionType,
+          type: 'value',
         },
       ],
       ref: 'rill',

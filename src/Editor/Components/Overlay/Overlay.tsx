@@ -1,10 +1,4 @@
-import React, {
-  type CSSProperties,
-  useState,
-  useEffect,
-  useRef,
-  useContext
-} from 'react';
+import React, { type CSSProperties, useState, useEffect, useRef, useContext } from 'react';
 
 import { Portal } from './Portal';
 import { type Theme, ThemeContext } from '../../theme';
@@ -42,7 +36,7 @@ export const Overlay = React.memo((props: React.PropsWithChildren<OverlayProps>)
     lazy = true,
     isOpen,
     onClose,
-    style
+    style,
   } = props;
 
   const theme = useContext<Theme>(ThemeContext).classes.overlay;
@@ -50,7 +44,7 @@ export const Overlay = React.memo((props: React.PropsWithChildren<OverlayProps>)
   const [wasEverOpened, setWasEverOpened] = useState(false);
 
   if (isOpen && !wasEverOpened) {
-      setWasEverOpened(true);
+    setWasEverOpened(true);
   }
 
   useEffect(() => {
@@ -74,10 +68,12 @@ export const Overlay = React.memo((props: React.PropsWithChildren<OverlayProps>)
     }
 
     function onFocus(event: FocusEvent) {
-      if (!enforceFocus ||
-          !(event.target instanceof Node) ||
-          !containerRef.current ||
-          containerRef.current.contains(event.target as HTMLElement)) {
+      if (
+        !enforceFocus ||
+        !(event.target instanceof Node) ||
+        !containerRef.current ||
+        containerRef.current.contains(event.target)
+      ) {
         return;
       }
 
@@ -101,15 +97,15 @@ export const Overlay = React.memo((props: React.PropsWithChildren<OverlayProps>)
     if (enforceFocus) {
       document.addEventListener('focus', onFocus, true);
     }
-    
+
     if (canEscapeKeyClose) {
       document.addEventListener('keydown', onKeyDown, true);
     }
-    
+
     if (canOutsideClickClose) {
-      document.addEventListener("mousedown", onDocumentClick, true);
+      document.addEventListener('mousedown', onDocumentClick, true);
     }
-    
+
     return () => {
       if (canEscapeKeyClose) {
         document.removeEventListener('keydown', onKeyDown, true);
@@ -120,19 +116,10 @@ export const Overlay = React.memo((props: React.PropsWithChildren<OverlayProps>)
       }
 
       if (canOutsideClickClose) {
-        document.removeEventListener("mousedown", onDocumentClick, true);
+        document.removeEventListener('mousedown', onDocumentClick, true);
       }
     };
-  }, [
-    isOpen,
-    autoFocus,
-    wasEverOpened,
-    canOutsideClickClose,
-    canEscapeKeyClose,
-    enforceFocus,
-    onClose,
-    hasBackdrop
-  ]);
+  }, [isOpen, autoFocus, wasEverOpened, canOutsideClickClose, canEscapeKeyClose, enforceFocus, onClose, hasBackdrop]);
 
   if (!wasEverOpened && lazy) {
     return null;
@@ -144,25 +131,12 @@ export const Overlay = React.memo((props: React.PropsWithChildren<OverlayProps>)
 
   const content = (
     <div className={theme.container}>
-        {
-          hasBackdrop &&
-          <div
-            className={theme.backdrop}
-          />
-        }
-        <div
-          ref={containerRef}
-          className={theme.content}
-          style={style}
-        >
-          {props.children}
-        </div>
+      {hasBackdrop && <div className={theme.backdrop} />}
+      <div ref={containerRef} className={theme.content} style={style}>
+        {props.children}
       </div>
+    </div>
   );
 
-  return usePortal ?
-          <Portal>
-            {content}
-          </Portal>
-          : content;
+  return usePortal ? <Portal>{content}</Portal> : content;
 });
