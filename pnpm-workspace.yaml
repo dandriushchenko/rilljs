@@ -13,6 +13,6 @@ minimumReleaseAge: 1440
 
 resolutionMode: lowest-direct
 
-trustPolicy: no-downgrade
+# trustPolicy: no-downgrade
 
 verifyDepsBeforeRun: install
